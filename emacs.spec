@@ -1,17 +1,14 @@
-%define checkout_HEAD 0
-%{?_with_checkout: %{expand: %%global checkout_HEAD 1}}
-
 
 Summary:	The Emacs text editor for the X Window System
 
-Name:		emacs-snapshot
-Version:	22.0.99
-Release:	%mkrel 1.20070514.1
+Name:		emacs
+Version:	22.1
+Release:	%mkrel 1
 License:	GPL
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
 
-Source0:	ftp://alpha.gnu.org/gnu/emacs/pretest/emacs-%{version}.tar.bz2
+Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.bz2
 Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
@@ -53,60 +50,48 @@ BuildRequires:	gtk+2-devel
 Requires(preun): /usr/sbin/update-alternatives
 Requires(post):  /usr/sbin/update-alternatives
 
-Requires:	emacs-snapshot-common = %version
+Requires:	emacs-common = %version
 Provides:	emacs-bin
 
-#Obsoletes:	emacs-X11 < 22.0.50
-#Provides:	emacs-X11 < 22.0.50
+Obsoletes:	emacs-snapshot < 22.1
+Obsoletes:	emacs-X11 < 22.0.50
+Provides:	emacs-X11 < 22.0.50
 
 %description
 Emacs-X11 includes the Emacs text editor program for use with the X
 Window System (it provides support for the mouse and other GUI
 elements). Emacs-X11 will also run Emacs outside of X, but it has a
-larger memory footprint than the 'non-X' Emacs package (emacs-snapshot-nox).
+larger memory footprint than the 'non-X' Emacs package (emacs-nox).
 
-Install emacs-snapshot if you are going to use Emacs with the X Window System.
-You should also install emacs-snapshot if you're going to run Emacs both with
+Install emacs if you are going to use Emacs with the X Window System.
+You should also install emacs if you're going to run Emacs both with
 and without X (it will work fine both ways). You'll also need to install the
-emacs-snapshot-common package in order to run Emacs.
+emacs-common package in order to run Emacs.
 
 %package el
 Summary:	The sources for elisp programs included with Emacs
 Group:		Editors
-Requires:	emacs-snapshot-common = %version
+Requires:	emacs-common = %version
 
 %description el
-Emacs-el contains the emacs-snapshot-elisp sources for many of the elisp
+Emacs-el contains the emacs-elisp sources for many of the elisp
 programs included with the main Emacs text editor package.
 
-You need to install emacs-snapshot-el only if you intend to modify any of the
+You need to install emacs-el only if you intend to modify any of the
 Emacs packages or see some elisp examples.
 
 %package doc
 Summary:	Emacs documentation
 Group:		Editors
-Requires:	emacs-snapshot-common = %version
+Requires:	emacs-common = %version
 
 %description doc
 The Emacs documentation.
 
-%package extras
-Summary:	Files that Emacs snapshot has in common with stable Emacs
-Group:		Editors
-Requires:	emacs-snapshot-common = %version
-Conflicts:	emacs < 22.0.50
-
-%description extras
-emacs-snapshot-extras includes files which are in stable emacs
-and would conflict with it:
-- binaries
-- info pages
-- man pages
-
 %package leim
 Summary:	Emacs Lisp code for input methods for internationalization
 Group:		Editors
-Requires:	emacs-snapshot-common = %version
+Requires:	emacs-common = %version
 
 %description leim
 The Emacs Lisp code for input methods for various international
@@ -115,8 +100,11 @@ character scripts.
 %package nox
 Summary:	The Emacs text editor without support for the X Window System
 Group:		Editors
-Requires:	emacs-snapshot-common = %version
+Requires:	emacs-common = %version
 Provides:	emacs-bin
+
+# we don't want to provide it, only obsolete
+Obsoletes:	emacs-snapshot-nox < 22.1
 
 Requires(preun): /usr/sbin/update-alternatives
 Requires(post):  /usr/sbin/update-alternatives
@@ -126,15 +114,18 @@ Emacs-nox is the Emacs text editor program without support for
 the X Window System.
 
 You need to install this package only if you plan on exclusively using Emacs
-without the X Window System (emacs-snapshot will work both in X and out of X,
-but emacs-snapshot-nox will only work outside of X). You'll also need to
-install the emacs-snapshot package in order to run Emacs.
+without the X Window System (emacs will work both in X and out of X,
+but emacs-nox will only work outside of X). You'll also need to
+install the emacs package in order to run Emacs.
 
 %package gtk
 Summary:	The Emacs text editor using GTK
 Group:		Editors
-Requires:	emacs-snapshot-common = %version
+Requires:	emacs-common = %version
 Provides:	emacs-bin
+
+# we don't want to provide it, only obsolete
+Obsoletes:	emacs-snapshot-gtk < 22.1
 
 Requires(preun): /usr/sbin/update-alternatives
 Requires(post):  /usr/sbin/update-alternatives
@@ -146,7 +137,7 @@ the X Window System and using GTK
 %package common
 Summary:	The libraries needed to run the GNU Emacs text editor
 Group:		Editors
-Requires:	emacs-snapshot-common = %version
+Requires:	emacs-common = %version
 
 Obsoletes:	gnus-emacs < 5.8.0
 Provides:	gnus-emacs = 5.11.0
@@ -154,12 +145,7 @@ Provides:	gnus-emacs = 5.11.0
 Conflicts:	emacs-speedbar < 1.0
 
 Conflicts:	emacs-tramp
-#Obsoletes:	emacs-tramp
-#Provides:	emacs-tramp
-
 Conflicts:	emacs-url
-#Obsoletes:	emacs-url
-#Provides:	emacs-url
 
 Obsoletes:	emacs-pcomplete <= 2.4.2
 Provides:	emacs-pcomplete = 1.1.1
@@ -167,8 +153,11 @@ Provides:	emacs-pcomplete = 1.1.1
 Obsoletes:	eshell-emacs <= 2.4.2
 Provides:	eshell-emacs = 2.1.2
 
-#Obsoletes:	emacs < 22.0.50
-#Provides:	emacs < 22.0.50
+Obsoletes:	emacs < 22.0.50
+Provides:	emacs < 22.0.50
+
+# we don't want to provide it, only obsolete
+Obsoletes:	emacs-snapshot-common < 22.1
 
 # conflicts due to %%_bindir/{b2m,etags,rcs-checkin}
 Conflicts: xemacs-extras
@@ -182,21 +171,13 @@ leaving the editor.
 
 This package includes the libraries you need to run the Emacs editor, so you
 need to install this package if you intend to use Emacs. You also need to
-install the actual Emacs program package (emacs-snapshot-nox or
-emacs-snapshot). Install emacs-snapshot-nox if you are not going to use the X
-Window System; install emacs-snapshot if you will be using X.
+install the actual Emacs program package (emacs-nox or
+emacs). Install emacs-nox if you are not going to use the X
+Window System; install emacs if you will be using X.
 
 %prep
 
-%if %{checkout_HEAD}
-  rm -rf emacs emacs-snapshot
-  cvs -z3 -d:pserver:anonymous@cvs.savannah.gnu.org:/cvsroot/emacs co emacs
-  mv emacs emacs-snapshot
-  tar cfj %SOURCE0 emacs-snapshot
-  rm -rf emacs-snapshot
-%endif
-
-%setup -q -n emacs-%{version}
+%setup -q
 
 perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 
@@ -278,8 +259,8 @@ install -d $RPM_BUILD_ROOT%{_libdir}/emacs/site-lisp
 
   
 mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/emacs
-install -m 644 %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/emacs/site-start-snapshot.el
-(cd $RPM_BUILD_ROOT%{_datadir}/emacs/%version/lisp; ln -s ../../../../..%{_sysconfdir}/emacs/site-start-snapshot.el site-start.el)
+install -m 644 %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/emacs/site-start.el
+(cd $RPM_BUILD_ROOT%{_datadir}/emacs/%version/lisp; ln -s ../../../../..%{_sysconfdir}/emacs/site-start.el site-start.el)
 
 install -d $RPM_BUILD_ROOT%{_sysconfdir}/emacs/site-start.d
 
@@ -304,7 +285,7 @@ cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-emacs.desktop << EOF
 Encoding=UTF-8
 Name=Emacs
 Comment="Powerful editor"
-Exec=emacs-%version
+Exec=emacs
 Icon=emacs
 Terminal=false
 Type=Application
@@ -388,20 +369,20 @@ have_info_files=$(echo $(ls $RPM_BUILD_ROOT%{_infodir} | egrep -v -- '-[0-9]+$' 
 %clean
 rm -rf $RPM_BUILD_ROOT
 
-%post extras
+%post common
 # --section="GNU Emacs"
 for f in %info_files; do  %_install_info $f
 done
 :
 
-%preun extras
+%preun
 for f in %info_files; do  %_remove_install_info $f
 done
 :
 
 
 %post nox
-update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 9
+update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 
 [[ ! -f %_bindir/emacs ]] && update-alternatives --auto emacs
 :
@@ -412,7 +393,7 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 9
 :
 
 %post gtk
-update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 29
+update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 31
 
 [[ ! -f %_bindir/emacs ]] && update-alternatives --auto emacs
 
@@ -426,7 +407,7 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 29
 
 
 %post
-/usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%version 19
+/usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%version 21
 
 %{update_menus}
 
@@ -444,15 +425,12 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 29
 %{_localstatedir}/games/emacs
 %dir %{_sysconfdir}/emacs/site-start.d
 %dir %{_sysconfdir}/emacs
-%config(noreplace) %{_sysconfdir}/emacs/site-start-snapshot.el
+%config(noreplace) %{_sysconfdir}/emacs/site-start.el
 %dir %{_datadir}/emacs
 %dir %{_datadir}/emacs/site-lisp
 %{_datadir}/emacs/%version/lisp/site-start.el
 %attr(2755,root,mail) %{_libdir}/emacs/%version/%_arch-mandrake-linux/movemail
 %attr(4755,games,root) %{_libdir}/emacs/%version/%_arch-mandrake-linux/update-game-score
-
-%files extras
-%defattr(-,root,root)
 %{_bindir}/b2m
 %{_bindir}/emacsclient
 %{_bindir}/etags
