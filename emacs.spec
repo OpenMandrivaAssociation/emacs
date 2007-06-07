@@ -145,7 +145,9 @@ Provides:	gnus-emacs = 5.11.0
 Conflicts:	emacs-speedbar < 1.0
 
 Conflicts:	emacs-tramp
-Conflicts:	emacs-url
+
+Obsoletes:	emacs-url
+Provides:	emacs-url
 
 Obsoletes:	emacs-pcomplete <= 2.4.2
 Provides:	emacs-pcomplete = 1.1.1
