@@ -3,7 +3,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	22.1
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPL
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
