@@ -286,7 +286,6 @@ EOF
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-emacs.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=Emacs
 Comment="Powerful editor"
 Exec=emacs
@@ -297,7 +296,6 @@ Categories=TextEditor;X-MandrivaLinux-MoreApplications-Editors;
 EOF
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-emacs-gtk.desktop << EOF
 [Desktop Entry]
-Encoding=UTF-8
 Name=Emacs GTK
 Comment="Powerful editor"
 Exec=emacs-gtk
