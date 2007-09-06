@@ -32,6 +32,7 @@ Patch104:	emacs-21.2-hide-toolbar.patch
 Patch111:	emacs-22.0.93-ispell-dictionnaries-list-iso-8859-15.patch
 Patch114:	emacs-21.3-ppc64.patch
 Patch115:	emacs-22.1-lzma-support.patch
+Patch116:	emacs-snapshot-fix-segfault-loading-bad-gif.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -204,6 +205,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch111 -p1
 %patch114 -p1
 %patch115 -p1 -z .lzma-support
+%patch116 -p0 -z .gif-segfault
 
 %build
 
@@ -214,27 +216,27 @@ PUREDEF="-DNCURSES_OSPEED_T"
 XPUREDEF="-DNCURSES_OSPEED_T"
 CONFOPTS="--prefix=%{_prefix} --libexecdir=%{_libdir} --sharedstatedir=/var --with-gcc --with-pop --mandir=%{_mandir} --infodir=%{_infodir}"
 
+export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
+export LDFLAGS=-s
+
 ./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
 make bootstrap
 
 make distclean
 #Build binary without X support
-CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss" LDFLAGS=-s \
-  ./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
+./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
 make
 mv src/emacs src/nox-emacs
 
 make distclean
 #Build binary with GTK support
-CFLAGS="$RPM_OPT_FLAGS $XPUREDEF -fno-zero-initialized-in-bss" LDFLAGS=-s \
-  ./configure ${CONFOPTS} --with-x-toolkit=gtk ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
+./configure ${CONFOPTS} --with-x-toolkit=gtk ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
 make
 mv src/emacs src/gtk-emacs
 
 make distclean
 #Build binary with X support
-CFLAGS="$RPM_OPT_FLAGS $XPUREDEF -fno-zero-initialized-in-bss" LDFLAGS=-s \
-  ./configure ${CONFOPTS} --with-x-toolkit ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
+./configure ${CONFOPTS} --with-x-toolkit ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
 make
 
 %install
