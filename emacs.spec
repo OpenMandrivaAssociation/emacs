@@ -3,7 +3,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	22.1
-Release:	%mkrel 5
+Release:	%mkrel 6
 License:	GPL
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -278,33 +278,27 @@ chmod -t $RPM_BUILD_ROOT%{_bindir}/emacs*
 
 # Menu support
 mkdir -p $RPM_BUILD_ROOT{%_menudir,%_liconsdir,%_miconsdir}
-cat > $RPM_BUILD_ROOT%{_menudir}/emacs << EOF
-?package(%{name}): needs=x11 section="More Applications/Editors" icon=emacs.png title=Emacs longtitle="Powerful editor" command=emacs-%version xdg="true"
-EOF
-cat > $RPM_BUILD_ROOT%{_menudir}/emacs-gtk << EOF
-?package(%{name}-gtk): needs=x11 section="More Applications/Editors" icon=emacs-gtk.png title="Emacs gtk" longtitle="Powerful editor (using gtk)" command=emacs-gtk xdg="true"
-EOF
 
 mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-emacs.desktop << EOF
 [Desktop Entry]
 Name=Emacs
-Comment="Powerful editor"
+Comment=Powerful editor
 Exec=emacs
 Icon=emacs
 Terminal=false
 Type=Application
-Categories=TextEditor;X-MandrivaLinux-MoreApplications-Editors;
+Categories=TextEditor;Utility;
 EOF
 cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-emacs-gtk.desktop << EOF
 [Desktop Entry]
 Name=Emacs GTK
-Comment="Powerful editor"
+Comment=Powerful editor
 Exec=emacs-gtk
-Icon=emacs
+Icon=emacs-gtk
 Terminal=false
 Type=Application
-Categories=TextEditor;X-MandrivaLinux-MoreApplications-Editors;
+Categories=TextEditor;Utility;GTK;
 EOF
 
 install -m 644 %SOURCE2 $RPM_BUILD_ROOT%_miconsdir/emacs.png
@@ -475,7 +469,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 31
 %doc src/COPYING
 %{_bindir}/emacs-gtk
 %{_datadir}/applications/mandriva-emacs-gtk.desktop
-%{_menudir}/emacs-gtk
 %{_iconsdir}/emacs-gtk.png
 %{_miconsdir}/emacs-gtk.png
 %{_liconsdir}/emacs-gtk.png
@@ -485,9 +478,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 31
 %doc src/COPYING
 %{_bindir}/emacs-%version
 %{_datadir}/applications/mandriva-emacs.desktop
-%{_menudir}/emacs
 %{_iconsdir}/emacs.png
 %{_miconsdir}/emacs.png
 %{_liconsdir}/emacs.png
-
-
