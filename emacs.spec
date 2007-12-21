@@ -34,6 +34,7 @@ Patch114:	emacs-21.3-ppc64.patch
 Patch115:	emacs-22.1-lzma-support.patch
 Patch116:	emacs-snapshot-fix-segfault-loading-bad-gif.patch
 
+BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
 BuildRequires:	Xaw3d-devel
 BuildRequires:	XFree86
