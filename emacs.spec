@@ -3,7 +3,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	22.1
-Release:	%mkrel 6
+Release:	%mkrel 7
 License:	GPL
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -24,6 +24,8 @@ Patch9:		emacs-22.0.90-force-sendmail-program.patch
 Patch20:	emacs-20.4-ppc-config.patch
 Patch21:	emacs-20.4-ppc.patch
 Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
+Patch23:	emacs-22.1-CVE-2007-5795.patch
+Patch24:	emacs-suse-CVE-2007-6109.patch
 
 Patch100:	emacs-22.0.98-infofix.patch
 Patch101:	emacs-21.2-version.patch
@@ -197,6 +199,10 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch21 -p1
 %patch22 -p1
 %endif
+%patch23 -p1 -b .cve-2007-5795
+pushd src
+%patch24 -p0
+popd
 
 %patch100 -p1
 %patch101 -p1
