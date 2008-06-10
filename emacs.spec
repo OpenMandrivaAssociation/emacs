@@ -1,3 +1,4 @@
+%define _localstatedir /var/lib
 
 Summary:	The Emacs text editor for the X Window System
 
