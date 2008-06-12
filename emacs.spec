@@ -404,23 +404,31 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 31
 
 [[ ! -f %_bindir/emacs ]] && update-alternatives --auto emacs
 
+%if %mdkversion < 200900
 %{update_menus}
+%endif
 
 %postun gtk
 [[ ! -f %_bindir/emacs-gtk ]] && \
     /usr/sbin/update-alternatives --remove emacs %_bindir/emacs-gtk
 
+%if %mdkversion < 200900
 %{clean_menus}
+%endif
 
 
 %post
 /usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%version 21
 
+%if %mdkversion < 200900
 %{update_menus}
+%endif
 
 
 %postun
+%if %mdkversion < 200900
 %{clean_menus}
+%endif
 
 [[ ! -f %{_bindir}/emacs-%{version} ]] && \
     /usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-%{version}|| :
