@@ -4,8 +4,8 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	22.1
-Release:	%mkrel 11
-License:	GPL
+Release:	%mkrel 12
+License:	GPLv2+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
 
@@ -28,6 +28,7 @@ Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
 Patch23:	emacs-22.1-CVE-2007-5795.patch
 Patch24:	emacs-suse-CVE-2007-6109.patch
 Patch25:	emacs-CVE-2008-1694.patch
+Patch26:	emacs-22.2-CVE-2008-2142.patch
 
 Patch100:	emacs-22.0.98-infofix.patch
 Patch101:	emacs-21.2-version.patch
@@ -206,6 +207,7 @@ pushd src
 %patch24 -p0
 popd
 %patch25 -p1
+%patch26 -p1
 
 %patch100 -p1
 %patch101 -p1
