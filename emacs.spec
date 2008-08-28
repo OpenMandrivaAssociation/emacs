@@ -3,13 +3,13 @@
 Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
-Version:	22.1
+Version:	22.2
 Release:	%mkrel 12
 License:	GPLv2+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
 
-Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.bz2
+Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.gz
 Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
@@ -25,24 +25,21 @@ Patch9:		emacs-22.0.90-force-sendmail-program.patch
 Patch20:	emacs-20.4-ppc-config.patch
 Patch21:	emacs-20.4-ppc.patch
 Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
-Patch23:	emacs-22.1-CVE-2007-5795.patch
-Patch24:	emacs-suse-CVE-2007-6109.patch
 Patch25:	emacs-CVE-2008-1694.patch
 Patch26:	emacs-22.2-CVE-2008-2142.patch
 
-Patch100:	emacs-22.0.98-infofix.patch
+Patch100:	emacs-22.2-infofix.patch
 Patch101:	emacs-21.2-version.patch
 Patch103:	emacs-21.2-x86_64.patch
 Patch104:	emacs-21.2-hide-toolbar.patch
 Patch111:	emacs-22.0.93-ispell-dictionnaries-list-iso-8859-15.patch
 Patch114:	emacs-21.3-ppc64.patch
 Patch115:	emacs-22.1-lzma-support.patch
-Patch116:	emacs-snapshot-fix-segfault-loading-bad-gif.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
 BuildRequires:	Xaw3d-devel
-BuildRequires:	XFree86
+BuildRequires:	x11-server-common
 BuildRequires:	libx11-devel
 BuildRequires:	gcc
 BuildRequires:	libjpeg-devel
@@ -202,13 +199,8 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch21 -p1
 %patch22 -p1
 %endif
-%patch23 -p1 -b .cve-2007-5795
-pushd src
-%patch24 -p0
-popd
 %patch25 -p1
 %patch26 -p1
-
 %patch100 -p1
 %patch101 -p1
 %patch103 -p1 -b .x86_64
@@ -216,7 +208,6 @@ popd
 %patch111 -p1
 %patch114 -p1
 %patch115 -p1 -z .lzma-support
-%patch116 -p0 -z .gif-segfault
 
 %build
 
@@ -365,8 +356,7 @@ find $RPM_BUILD_ROOT%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir 
   egrep -v 'movemail$|update-game-score$' | sed "s^$RPM_BUILD_ROOT^^" >> common-filelist
 
 
-%define info_files ada-mode autotype calc ccmode cl dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime erc eshell eudc flymake forms gnus idlwave info message mh-e newsticker org pcl-cvs pgg rcirc reftex sc ses sieve smtpmail speedbar tramp url vip viper widget woman
-
+%define info_files ada-mode autotype calc ccmode cl dir.old dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime erc eshell eudc flymake forms gnus idlwave info message mh-e newsticker org pcl-cvs pgg rcirc reftex sc ses sieve smtpmail speedbar tramp url vip viper widget woman
 have_info_files=$(echo $(ls $RPM_BUILD_ROOT%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
 
 [ "$have_info_files" = "%info_files" ] || { 
