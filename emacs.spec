@@ -356,7 +356,7 @@ find $RPM_BUILD_ROOT%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir 
   egrep -v 'movemail$|update-game-score$' | sed "s^$RPM_BUILD_ROOT^^" >> common-filelist
 
 
-%define info_files ada-mode autotype calc ccmode cl dir.old dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime erc eshell eudc flymake forms gnus idlwave info message mh-e newsticker org pcl-cvs pgg rcirc reftex sc ses sieve smtpmail speedbar tramp url vip viper widget woman
+%define info_files ada-mode autotype calc ccmode cl dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime erc eshell eudc flymake forms gnus idlwave info message mh-e newsticker org pcl-cvs pgg rcirc reftex sc ses sieve smtpmail speedbar tramp url vip viper widget woman
 have_info_files=$(echo $(ls $RPM_BUILD_ROOT%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
 
 [ "$have_info_files" = "%info_files" ] || { 
