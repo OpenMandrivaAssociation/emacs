@@ -3,9 +3,9 @@
 Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
-Version:	22.2
-Release:	%mkrel 12
-License:	GPLv2+
+Version:	22.3
+Release:	%mkrel 1
+License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
 
@@ -25,8 +25,6 @@ Patch9:		emacs-22.0.90-force-sendmail-program.patch
 Patch20:	emacs-20.4-ppc-config.patch
 Patch21:	emacs-20.4-ppc.patch
 Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
-Patch25:	emacs-CVE-2008-1694.patch
-Patch26:	emacs-22.2-CVE-2008-2142.patch
 
 Patch100:	emacs-22.2-infofix.patch
 Patch101:	emacs-21.2-version.patch
@@ -199,8 +197,6 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch21 -p1
 %patch22 -p1
 %endif
-%patch25 -p1
-%patch26 -p1
 %patch100 -p1
 %patch101 -p1
 %patch103 -p1 -b .x86_64
@@ -242,47 +238,47 @@ make distclean
 make
 
 %install
-rm -rf $RPM_BUILD_ROOT
-mkdir -p $RPM_BUILD_ROOT/usr
+rm -rf %{buildroot}
+mkdir -p %{buildroot}/usr
 
 PATH=$PATH:/sbin
 ARCHDIR=${RPM_ARCH}-mandrake-linux
-%old_makeinstall sharedstatedir=$RPM_BUILD_ROOT/var
+%old_makeinstall sharedstatedir=%{buildroot}/var
 
-rm -f $RPM_BUILD_ROOT%_bindir/emacs
-rm -f $RPM_BUILD_ROOT%{_infodir}/dir
-rm $RPM_BUILD_ROOT%{_libdir}/emacs/%version/%_arch-mandrake-linux/fakemail
+rm -f %{buildroot}%_bindir/emacs
+rm -f %{buildroot}%{_infodir}/dir
+rm %{buildroot}%{_libdir}/emacs/%version/%_arch-mandrake-linux/fakemail
 # remove sun specific stuff
-rm -f $RPM_BUILD_ROOT%{_datadir}/emacs/%version/etc/{emacstool.1,emacs.1,ctags.1,etags.1,sex.6}
+rm -f %{buildroot}%{_datadir}/emacs/%version/etc/{emacstool.1,emacs.1,ctags.1,etags.1,sex.6}
 
 # move some man page to the right place
-mv $RPM_BUILD_ROOT%{_datadir}/emacs/%version/etc/emacsclient.1 $RPM_BUILD_ROOT%{_mandir}/man1/
+mv %{buildroot}%{_datadir}/emacs/%version/etc/emacsclient.1 $RPM_BUILD_ROOT%{_mandir}/man1/
 
 # rename ctags to gctags
-mv $RPM_BUILD_ROOT%{_mandir}/man1/ctags.1 $RPM_BUILD_ROOT%{_mandir}/man1/gctags.1
-mv $RPM_BUILD_ROOT%{_bindir}/ctags $RPM_BUILD_ROOT%{_bindir}/gctags
+mv %{buildroot}%{_mandir}/man1/ctags.1 $RPM_BUILD_ROOT%{_mandir}/man1/gctags.1
+mv %{buildroot}%{_bindir}/ctags $RPM_BUILD_ROOT%{_bindir}/gctags
 
 # is that needed?
-install -d $RPM_BUILD_ROOT%{_libdir}/emacs/site-lisp
+install -d %{buildroot}%{_libdir}/emacs/site-lisp
 
   
-mkdir -p $RPM_BUILD_ROOT%{_sysconfdir}/emacs
-install -m 644 %{SOURCE5} $RPM_BUILD_ROOT%{_sysconfdir}/emacs/site-start.el
-(cd $RPM_BUILD_ROOT%{_datadir}/emacs/%version/lisp; ln -s ../../../../..%{_sysconfdir}/emacs/site-start.el site-start.el)
+mkdir -p %{buildroot}%{_sysconfdir}/emacs
+install -m 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/emacs/site-start.el
+(cd %{buildroot}%{_datadir}/emacs/%version/lisp; ln -s ../../../../..%{_sysconfdir}/emacs/site-start.el site-start.el)
 
-install -d $RPM_BUILD_ROOT%{_sysconfdir}/emacs/site-start.d
+install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
 
 
-install -m755 src/nox-emacs $RPM_BUILD_ROOT%{_bindir}/emacs-nox
-install -m755 src/gtk-emacs $RPM_BUILD_ROOT%{_bindir}/emacs-gtk
-chmod -t $RPM_BUILD_ROOT%{_bindir}/emacs*
+install -m755 src/nox-emacs %{buildroot}%{_bindir}/emacs-nox
+install -m755 src/gtk-emacs %{buildroot}%{_bindir}/emacs-gtk
+chmod -t %{buildroot}%{_bindir}/emacs*
 
 
 # Menu support
-mkdir -p $RPM_BUILD_ROOT{%_menudir,%_liconsdir,%_miconsdir}
+mkdir -p %{buildroot}{%_menudir,%_liconsdir,%_miconsdir}
 
-mkdir -p $RPM_BUILD_ROOT%{_datadir}/applications
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-emacs.desktop << EOF
+mkdir -p %{buildroot}%{_datadir}/applications
+cat > %{buildroot}%{_datadir}/applications/mandriva-emacs.desktop << EOF
 [Desktop Entry]
 Name=Emacs
 Comment=Powerful editor
@@ -292,7 +288,7 @@ Terminal=false
 Type=Application
 Categories=TextEditor;Utility;
 EOF
-cat > $RPM_BUILD_ROOT%{_datadir}/applications/mandriva-emacs-gtk.desktop << EOF
+cat > %{buildroot}%{_datadir}/applications/mandriva-emacs-gtk.desktop << EOF
 [Desktop Entry]
 Name=Emacs GTK
 Comment=Powerful editor
@@ -303,13 +299,13 @@ Type=Application
 Categories=TextEditor;Utility;GTK;
 EOF
 
-install -m 644 %SOURCE2 $RPM_BUILD_ROOT%_miconsdir/emacs.png
-install -m 644 %SOURCE3 $RPM_BUILD_ROOT%_iconsdir/emacs.png
-install -m 644 %SOURCE4 $RPM_BUILD_ROOT%_liconsdir/emacs.png
+install -m 644 %SOURCE2 %{buildroot}%_miconsdir/emacs.png
+install -m 644 %SOURCE3 %{buildroot}%_iconsdir/emacs.png
+install -m 644 %SOURCE4 %{buildroot}%_liconsdir/emacs.png
 
-install -m 644 %SOURCE2 $RPM_BUILD_ROOT%_miconsdir/emacs-gtk.png
-install -m 644 %SOURCE3 $RPM_BUILD_ROOT%_iconsdir/emacs-gtk.png
-install -m 644 %SOURCE4 $RPM_BUILD_ROOT%_liconsdir/emacs-gtk.png
+install -m 644 %SOURCE2 %{buildroot}%_miconsdir/emacs-gtk.png
+install -m 644 %SOURCE3 %{buildroot}%_iconsdir/emacs-gtk.png
+install -m 644 %SOURCE4 %{buildroot}%_liconsdir/emacs-gtk.png
 
 
 
@@ -320,21 +316,21 @@ install -m 644 %SOURCE4 $RPM_BUILD_ROOT%_liconsdir/emacs-gtk.png
 #
 # 3.22MB of docs from emacs-common to emacs-doc to reduce size (tutorials, news, postscript files, ...)
 # NB: etc/ps-prin{0,1}.ps are needed by ps-print
-find $RPM_BUILD_ROOT%{_datadir}/emacs/%version/etc/ -type f | \
+find %{buildroot}%{_datadir}/emacs/%version/etc/ -type f | \
   egrep 'TUTORIAL\.|NEWS|ONEWS|.ps$'|fgrep -v /etc/ps-prin | \
-  sed "s^$RPM_BUILD_ROOT^^" > doc-filelist
+  sed "s^%{buildroot}^^" > doc-filelist
 
 #
 # emacs-el file list
 #
 
 # take every .el and .el.gz which have a corresponding .elc
-find $RPM_BUILD_ROOT%{_datadir}/emacs -name '*.el' -o -name '*.el.gz' | \
+find %{buildroot}%{_datadir}/emacs -name '*.el' -o -name '*.el.gz' | \
   grep -v /leim/ | while read I; do
   f=`basename $I .gz`
   f=`basename $f .el`
   if [ -e `dirname $I`/$f.elc ]; then 
-    echo $I | sed "s^$RPM_BUILD_ROOT^^"
+    echo $I | sed "s^%{buildroot}^^"
   fi
 done > el-filelist
 
@@ -346,18 +342,18 @@ echo %{_datadir}/emacs/%version/etc/termcap.src >> el-filelist
 #
 
 # everything not in previous filelists, and remove a few things listed in %files
-find $RPM_BUILD_ROOT%{_datadir}/emacs/%version -type f -print -o -type d -printf "%%%%dir %%p\n" | \
-  grep -v /leim/ | sed "s^$RPM_BUILD_ROOT^^" > common-filelist.raw
+find %{buildroot}%{_datadir}/emacs/%version -type f -print -o -type d -printf "%%%%dir %%p\n" | \
+  grep -v /leim/ | sed "s^%{buildroot}^^" > common-filelist.raw
 while read I; do
   grep -qxF $I doc-filelist el-filelist || echo $I
 done < common-filelist.raw > common-filelist
 
-find $RPM_BUILD_ROOT%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
-  egrep -v 'movemail$|update-game-score$' | sed "s^$RPM_BUILD_ROOT^^" >> common-filelist
+find %{buildroot}%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
+  egrep -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
 
 
 %define info_files ada-mode autotype calc ccmode cl dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime erc eshell eudc flymake forms gnus idlwave info message mh-e newsticker org pcl-cvs pgg rcirc reftex sc ses sieve smtpmail speedbar tramp url vip viper widget woman
-have_info_files=$(echo $(ls $RPM_BUILD_ROOT%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
+have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
 
 [ "$have_info_files" = "%info_files" ] || { 
   echo "you must modify the spec file, %%info_files should be: $have_info_files"
@@ -366,7 +362,7 @@ have_info_files=$(echo $(ls $RPM_BUILD_ROOT%{_infodir} | egrep -v -- '-[0-9]+$' 
 
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post common
 # --section="GNU Emacs"
