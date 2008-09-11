@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	22.3
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -215,7 +215,6 @@ XPUREDEF="-DNCURSES_OSPEED_T"
 CONFOPTS="--prefix=%{_prefix} --libexecdir=%{_libdir} --sharedstatedir=/var --with-gcc --with-pop --mandir=%{_mandir} --infodir=%{_infodir}"
 
 export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
-export LDFLAGS=-s
 
 ./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
 make bootstrap
