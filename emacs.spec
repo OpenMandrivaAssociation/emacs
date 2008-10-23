@@ -146,7 +146,8 @@ Provides:	gnus-emacs = 5.11.0
 
 Conflicts:	emacs-speedbar < 1.0
 
-Conflicts:	emacs-tramp
+Obsoletes:	emacs-tramp < 2.0.58-pre
+Provides:	emacs-tramp = 2.0.58-pre
 
 Obsoletes:	emacs-url
 Provides:	emacs-url
