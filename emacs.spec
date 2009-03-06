@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	22.3
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -261,7 +261,7 @@ mv %{buildroot}%{_bindir}/ctags $RPM_BUILD_ROOT%{_bindir}/gctags
 # is that needed?
 install -d %{buildroot}%{_libdir}/emacs/site-lisp
 
-  
+
 mkdir -p %{buildroot}%{_sysconfdir}/emacs
 install -m 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/emacs/site-start.el
 (cd %{buildroot}%{_datadir}/emacs/%version/lisp; ln -s ../../../../..%{_sysconfdir}/emacs/site-start.el site-start.el)
@@ -329,7 +329,7 @@ find %{buildroot}%{_datadir}/emacs -name '*.el' -o -name '*.el.gz' | \
   grep -v /leim/ | while read I; do
   f=`basename $I .gz`
   f=`basename $f .el`
-  if [ -e `dirname $I`/$f.elc ]; then 
+  if [ -e `dirname $I`/$f.elc ]; then
     echo $I | sed "s^%{buildroot}^^"
   fi
 done > el-filelist
@@ -355,7 +355,7 @@ find %{buildroot}%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p
 %define info_files ada-mode autotype calc ccmode cl dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime erc eshell eudc flymake forms gnus idlwave info message mh-e newsticker org pcl-cvs pgg rcirc reftex sc ses sieve smtpmail speedbar tramp url vip viper widget woman
 have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
 
-[ "$have_info_files" = "%info_files" ] || { 
+[ "$have_info_files" = "%info_files" ] || {
   echo "you must modify the spec file, %%info_files should be: $have_info_files"
   exit 1
 }
