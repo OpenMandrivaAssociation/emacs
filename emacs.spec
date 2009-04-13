@@ -28,8 +28,8 @@ Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
 
 Patch100:	emacs-22.2-infofix.patch
 Patch101:	emacs-22.3-version.patch
-Patch103:	emacs-22.3-x86_64.patch
-Patch104:	emacs-21.2-hide-toolbar.patch
+Patch103:	emacs-21.2-x86_64.patch
+Patch104:	emacs-22.3-hide-toolbar.patch
 Patch111:	emacs-22.0.93-ispell-dictionnaries-list-iso-8859-15.patch
 Patch114:	emacs-21.3-ppc64.patch
 Patch115:	emacs-22.1-lzma-support.patch
