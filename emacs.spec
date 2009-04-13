@@ -31,7 +31,7 @@ Patch101:	emacs-22.3-version.patch
 Patch103:	emacs-21.2-x86_64.patch
 Patch104:	emacs-22.3-hide-toolbar.patch
 Patch111:	emacs-22.0.93-ispell-dictionnaries-list-iso-8859-15.patch
-Patch114:	emacs-21.3-ppc64.patch
+Patch114:	emacs-22.3-ppc64.patch
 Patch115:	emacs-22.1-lzma-support.patch
 
 BuildRoot:	%_tmppath/%name-root
@@ -203,7 +203,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch103 -p1 -b .x86_64
 %patch104 -p1 -b .toolbar
 %patch111 -p1
-%patch114 -p1
+%patch114 -p1 -b .ppc
 %patch115 -p1 -z .lzma-support
 
 %build
