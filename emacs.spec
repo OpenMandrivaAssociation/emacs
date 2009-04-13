@@ -33,6 +33,7 @@ Patch104:	emacs-22.3-hide-toolbar.patch
 Patch111:	emacs-22.0.93-ispell-dictionnaries-list-iso-8859-15.patch
 Patch114:	emacs-22.3-ppc64.patch
 Patch115:	emacs-22.1-lzma-support.patch
+Patch116:	emacs-22.3-fix-str-fmt.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -205,6 +206,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch111 -p1
 %patch114 -p1 -b .ppc
 %patch115 -p1 -z .lzma-support
+%patch116 -p0 -b .str
 
 %build
 autoreconf -fi
