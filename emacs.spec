@@ -28,7 +28,7 @@ Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
 
 Patch100:	emacs-22.2-infofix.patch
 Patch101:	emacs-22.3-version.patch
-Patch103:	emacs-21.2-x86_64.patch
+Patch103:	emacs-22.3-x86_64.patch
 Patch104:	emacs-21.2-hide-toolbar.patch
 Patch111:	emacs-22.0.93-ispell-dictionnaries-list-iso-8859-15.patch
 Patch114:	emacs-21.3-ppc64.patch
@@ -201,7 +201,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch100 -p1
 %patch101 -p1 -b .version
 %patch103 -p1 -b .x86_64
-%patch104 -p1
+%patch104 -p1 -b .toolbar
 %patch111 -p1
 %patch114 -p1
 %patch115 -p1 -z .lzma-support
