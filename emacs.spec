@@ -17,7 +17,7 @@ Source5:	emacs-config
 
 Patch1: 	emacs-20.5-loadup.patch
 Patch3: 	emacs-20.6-ia64-2.patch
-Patch5:		emacs-21.1-bzip2.patch
+Patch5:		emacs-22.3-bzip2.patch
 Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
 Patch7:		emacs-22.0.90-rpath.patch
 Patch9:		emacs-22.0.90-force-sendmail-program.patch
