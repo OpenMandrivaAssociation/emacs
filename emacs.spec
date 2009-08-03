@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	23.1
-Release:	%mkrel 3
+Release:	%mkrel 4
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -76,6 +76,7 @@ emacs-common package in order to run Emacs.
 Summary:	The sources for elisp programs included with Emacs
 Group:		Editors
 Requires:	emacs-common = %version
+Obsoletes:	emacs-snapshot-el < %version
 
 %description el
 Emacs-el contains the emacs-elisp sources for many of the elisp
@@ -88,6 +89,7 @@ Emacs packages or see some elisp examples.
 Summary:	Emacs documentation
 Group:		Editors
 Requires:	emacs-common = %version
+Obsoletes:	emacs-snapshot-doc < %version
 
 %description doc
 The Emacs documentation.
@@ -96,6 +98,7 @@ The Emacs documentation.
 Summary:	Emacs Lisp code for input methods for internationalization
 Group:		Editors
 Requires:	emacs-common = %version
+Obsoletes:	emacs-snapshot-leim < %version
 
 %description leim
 The Emacs Lisp code for input methods for various international
