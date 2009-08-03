@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	23.1
-Release:	%mkrel 2
+Release:	%mkrel 3
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -56,7 +56,7 @@ Requires(post):  update-alternatives
 Requires:	emacs-common = %version
 Provides:	emacs-bin emacs-gtk
 
-Obsoletes:	emacs-snapshot < 22.1
+Obsoletes:	emacs-snapshot < %version
 Obsoletes:	emacs-gtk <= 22.3
 Obsoletes:	emacs-X11 < 22.0.50
 Provides:	emacs-X11 < 22.0.50
@@ -108,7 +108,7 @@ Requires:	emacs-common = %version
 Provides:	emacs-bin
 
 # we don't want to provide it, only obsolete
-Obsoletes:	emacs-snapshot-nox < 22.1
+Obsoletes:	emacs-snapshot-nox < %version
 
 Requires(preun): update-alternatives
 Requires(post):  update-alternatives
@@ -148,7 +148,7 @@ Obsoletes:	emacs < 22.0.50
 Provides:	emacs < 22.0.50
 
 # we don't want to provide it, only obsolete
-Obsoletes:	emacs-snapshot-common < 22.1
+Obsoletes:	emacs-snapshot-common < %versio
 
 # conflicts due to %%_bindir/{b2m,etags,rcs-checkin}
 Conflicts: xemacs-extras
