@@ -148,7 +148,7 @@ Obsoletes:	emacs < 22.0.50
 Provides:	emacs < 22.0.50
 
 # we don't want to provide it, only obsolete
-Obsoletes:	emacs-snapshot-common < %versio
+Obsoletes:	emacs-snapshot-common < %version
 
 # conflicts due to %%_bindir/{b2m,etags,rcs-checkin}
 Conflicts: xemacs-extras
