@@ -3,21 +3,21 @@
 Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
-Version:	22.3
-Release:	%mkrel 4
+Version:	23.1
+Release:	%mkrel 1
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
 
-Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.gz
+Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.bz2
 Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
 Source5:	emacs-config
 
 Patch1: 	emacs-20.5-loadup.patch
-Patch3: 	emacs-20.6-ia64-2.patch
-Patch5:		emacs-22.3-bzip2.patch
+Patch3: 	emacs-23.0.94-ia64-1.patch
+Patch5:		emacs-23.0.94-bzip2.patch
 Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
 Patch7:		emacs-22.0.90-rpath.patch
 Patch9:		emacs-22.0.90-force-sendmail-program.patch
@@ -26,13 +26,13 @@ Patch20:	emacs-20.4-ppc-config.patch
 Patch21:	emacs-20.4-ppc.patch
 Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
 
-Patch100:	emacs-22.2-infofix.patch
+Patch100:	emacs-23.0.94-infofix.patch
 Patch101:	emacs-22.3-version.patch
-Patch103:	emacs-21.2-x86_64.patch
+Patch103:	emacs-23.0.94-x86_64.patch
 Patch104:	emacs-22.3-hide-toolbar.patch
-Patch111:	emacs-22.0.93-ispell-dictionnaries-list-iso-8859-15.patch
-Patch114:	emacs-22.3-ppc64.patch
-Patch115:	emacs-22.1-lzma-support.patch
+Patch111:	emacs-23.0.94-ispell-dictionaries-list-iso-8859-15.patch
+Patch114:	emacs-23.0.94-ppc64.patch
+Patch115:	emacs-23.0.94-lzma-support.patch
 Patch116:	emacs-22.3-fix-str-fmt.patch
 
 BuildRoot:	%_tmppath/%name-root
@@ -54,9 +54,10 @@ Requires(preun): update-alternatives
 Requires(post):  update-alternatives
 
 Requires:	emacs-common = %version
-Provides:	emacs-bin
+Provides:	emacs-bin emacs-gtk
 
 Obsoletes:	emacs-snapshot < 22.1
+Obsoletes:	emacs-gtk <= 22.3
 Obsoletes:	emacs-X11 < 22.0.50
 Provides:	emacs-X11 < 22.0.50
 
@@ -120,22 +121,6 @@ You need to install this package only if you plan on exclusively using Emacs
 without the X Window System (emacs will work both in X and out of X,
 but emacs-nox will only work outside of X). You'll also need to
 install the emacs package in order to run Emacs.
-
-%package gtk
-Summary:	The Emacs text editor using GTK
-Group:		Editors
-Requires:	emacs-common = %version
-Provides:	emacs-bin
-
-# we don't want to provide it, only obsolete
-Obsoletes:	emacs-snapshot-gtk < 22.1
-
-Requires(preun): update-alternatives
-Requires(post):  update-alternatives
-
-%description gtk
-Emacs-gtk is the Emacs text editor program with support for
-the X Window System and using GTK
 
 %package common
 Summary:	The libraries needed to run the GNU Emacs text editor
@@ -213,7 +198,7 @@ autoreconf -fi
 
 PUREDEF="-DNCURSES_OSPEED_T"
 XPUREDEF="-DNCURSES_OSPEED_T"
-CONFOPTS="--prefix=%{_prefix} --libexecdir=%{_libdir} --sharedstatedir=/var --with-gcc --with-pop --mandir=%{_mandir} --infodir=%{_infodir}"
+CONFOPTS="--prefix=%{_prefix} --libexecdir=%{_libdir} --sharedstatedir=/var --with-pop --mandir=%{_mandir} --infodir=%{_infodir}"
 
 export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
 
@@ -225,12 +210,6 @@ make distclean
 ./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
 make
 mv src/emacs src/nox-emacs
-
-make distclean
-#Build binary with GTK support
-./configure ${CONFOPTS} --with-x-toolkit=gtk ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
-make
-mv src/emacs src/gtk-emacs
 
 make distclean
 #Build binary with X support
@@ -251,16 +230,12 @@ rm %{buildroot}%{_libdir}/emacs/%version/%_arch-mandrake-linux/fakemail
 # remove sun specific stuff
 rm -f %{buildroot}%{_datadir}/emacs/%version/etc/{emacstool.1,emacs.1,ctags.1,etags.1,sex.6}
 
-# move some man page to the right place
-mv %{buildroot}%{_datadir}/emacs/%version/etc/emacsclient.1 $RPM_BUILD_ROOT%{_mandir}/man1/
-
 # rename ctags to gctags
 mv %{buildroot}%{_mandir}/man1/ctags.1 $RPM_BUILD_ROOT%{_mandir}/man1/gctags.1
 mv %{buildroot}%{_bindir}/ctags $RPM_BUILD_ROOT%{_bindir}/gctags
 
 # is that needed?
 install -d %{buildroot}%{_libdir}/emacs/site-lisp
-
 
 mkdir -p %{buildroot}%{_sysconfdir}/emacs
 install -m 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/emacs/site-start.el
@@ -270,43 +245,7 @@ install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
 
 
 install -m755 src/nox-emacs %{buildroot}%{_bindir}/emacs-nox
-install -m755 src/gtk-emacs %{buildroot}%{_bindir}/emacs-gtk
 chmod -t %{buildroot}%{_bindir}/emacs*
-
-
-# Menu support
-mkdir -p %{buildroot}{%_menudir,%_liconsdir,%_miconsdir}
-
-mkdir -p %{buildroot}%{_datadir}/applications
-cat > %{buildroot}%{_datadir}/applications/mandriva-emacs.desktop << EOF
-[Desktop Entry]
-Name=Emacs
-Comment=Powerful editor
-Exec=emacs
-Icon=emacs
-Terminal=false
-Type=Application
-Categories=TextEditor;Utility;
-EOF
-cat > %{buildroot}%{_datadir}/applications/mandriva-emacs-gtk.desktop << EOF
-[Desktop Entry]
-Name=Emacs GTK
-Comment=Powerful editor
-Exec=emacs-gtk
-Icon=emacs-gtk
-Terminal=false
-Type=Application
-Categories=TextEditor;Utility;GTK;
-EOF
-
-install -m 644 %SOURCE2 %{buildroot}%_miconsdir/emacs.png
-install -m 644 %SOURCE3 %{buildroot}%_iconsdir/emacs.png
-install -m 644 %SOURCE4 %{buildroot}%_liconsdir/emacs.png
-
-install -m 644 %SOURCE2 %{buildroot}%_miconsdir/emacs-gtk.png
-install -m 644 %SOURCE3 %{buildroot}%_iconsdir/emacs-gtk.png
-install -m 644 %SOURCE4 %{buildroot}%_liconsdir/emacs-gtk.png
-
 
 
 # create file lists
@@ -335,8 +274,6 @@ find %{buildroot}%{_datadir}/emacs -name '*.el' -o -name '*.el.gz' | \
 done > el-filelist
 
 # add this
-echo %{_datadir}/emacs/%version/etc/termcap.src >> el-filelist
-
 #
 # emacs-common file list
 #
@@ -352,7 +289,7 @@ find %{buildroot}%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p
   egrep -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
 
 
-%define info_files ada-mode autotype calc ccmode cl dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime erc eshell eudc flymake forms gnus idlwave info message mh-e newsticker org pcl-cvs pgg rcirc reftex sc ses sieve smtpmail speedbar tramp url vip viper widget woman
+%define info_files ada-mode auth autotype calc ccmode cl dbus dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime epa erc eshell eudc flymake forms gnus idlwave info mairix-el message mh-e newsticker nxml-mode org pcl-cvs pgg rcirc reftex remember sasl sc ses sieve smtpmail speedbar tramp url vip viper widget woman
 have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
 
 [ "$have_info_files" = "%info_files" ] || {
@@ -386,24 +323,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 [[ ! -f %_bindir/emacs-nox ]] && \
     /usr/sbin/update-alternatives --remove emacs %_bindir/emacs-nox
 :
-
-%post gtk
-update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 31
-
-[[ ! -f %_bindir/emacs ]] && update-alternatives --auto emacs
-
-%if %mdkversion < 200900
-%{update_menus}
-%endif
-
-%postun gtk
-[[ ! -f %_bindir/emacs-gtk ]] && \
-    /usr/sbin/update-alternatives --remove emacs %_bindir/emacs-gtk
-
-%if %mdkversion < 200900
-%{clean_menus}
-%endif
-
 
 %post
 /usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%version 21
@@ -469,20 +388,12 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-gtk 31
 %doc src/COPYING
 %{_bindir}/emacs-nox
 
-%files gtk
-%defattr(-,root,root)
-%doc src/COPYING
-%{_bindir}/emacs-gtk
-%{_datadir}/applications/mandriva-emacs-gtk.desktop
-%{_iconsdir}/emacs-gtk.png
-%{_miconsdir}/emacs-gtk.png
-%{_liconsdir}/emacs-gtk.png
-
 %files
 %defattr(-,root,root)
 %doc src/COPYING
 %{_bindir}/emacs-%version
-%{_datadir}/applications/mandriva-emacs.desktop
-%{_iconsdir}/emacs.png
-%{_miconsdir}/emacs.png
-%{_liconsdir}/emacs.png
+%{_datadir}/applications/emacs.desktop
+%_iconsdir/hicolor/*/apps/emacs*.png
+%_iconsdir/hicolor/scalable/apps/emacs.svg
+%_iconsdir/hicolor/scalable/mimetypes/emacs-document.svg
+
