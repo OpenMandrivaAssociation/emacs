@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	23.1
-Release:	%mkrel 5
+Release:	%mkrel 6
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -34,6 +34,9 @@ Patch111:	emacs-23.0.94-ispell-dictionaries-list-iso-8859-15.patch
 Patch114:	emacs-23.0.94-ppc64.patch
 Patch115:	emacs-23.0.94-lzma-support.patch
 Patch116:	emacs-22.3-fix-str-fmt.patch
+# Fix Gtk menus not being updated
+# From http://emacsbugs.donarmstrong.com/cgi-bin/bugreport.cgi?bug=4122
+Patch117:	emacs-gtk-menus.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -195,6 +198,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch114 -p1 -b .ppc
 %patch115 -p1 -z .lzma-support
 %patch116 -p0 -b .str
+%patch117 -p0 -b .gtkmenus
 
 %build
 autoreconf -fi
