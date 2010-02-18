@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	23.1
-Release:	%mkrel 9
+Release:	%mkrel 10
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -136,6 +136,9 @@ Requires:	emacs-common = %version
 
 Obsoletes:	gnus-emacs < 5.8.0
 Provides:	gnus-emacs = 5.11.0
+
+Obsoletes:	emacs-easypg < 1.0.0
+Provides:	emacs-easypg = 1.0.0
 
 Obsoletes:	emacs-erc < 5.3
 Provides:	emacs-erc = 5.3
