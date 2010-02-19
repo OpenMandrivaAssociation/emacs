@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	23.1
-Release:	%mkrel 11
+Release:	%mkrel 12
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -37,6 +37,9 @@ Patch116:	emacs-22.3-fix-str-fmt.patch
 # Fix Gtk menus not being updated
 # From http://emacsbugs.donarmstrong.com/cgi-bin/bugreport.cgi?bug=4122
 Patch117:	emacs-gtk-menus.patch
+
+# Fix Mandriva bug #52794 using patch for Fedora bug #517272:
+Patch118:	emacs-23.1-fontdpi.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -206,6 +209,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch115 -p1 -z .lzma-support
 %patch116 -p0 -b .str
 %patch117 -p0 -b .gtkmenus
+%patch118 -p1 -b .fontdpi
 
 %build
 autoreconf -fi
@@ -217,18 +221,18 @@ CONFOPTS="--prefix=%{_prefix} --libexecdir=%{_libdir} --sharedstatedir=/var --wi
 export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
 
 ./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
-make bootstrap
+%make bootstrap
 
-make distclean
+%make distclean
 #Build binary without X support
 ./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
-make
+%make
 mv src/emacs src/nox-emacs
 
-make distclean
+%make distclean
 #Build binary with X support
 ./configure ${CONFOPTS} --with-x-toolkit ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
-make
+%make
 
 %install
 rm -rf %{buildroot}
