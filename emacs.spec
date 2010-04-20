@@ -4,7 +4,7 @@ Summary:	The Emacs text editor for the X Window System
 
 Name:		emacs
 Version:	23.1
-Release:	%mkrel 13
+Release:	%mkrel 14
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -40,6 +40,7 @@ Patch117:	emacs-gtk-menus.patch
 
 # Fix Mandriva bug #52794 using patch for Fedora bug #517272:
 Patch118:	emacs-23.1-fontdpi.patch
+Patch119:	emacs-23.1-CVE-2010-0825.diff
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -210,6 +211,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch116 -p0 -b .str
 %patch117 -p0 -b .gtkmenus
 %patch118 -p1 -b .fontdpi
+%patch119 -p0 -b .CVE-2010-0825
 
 %build
 autoreconf -fi
