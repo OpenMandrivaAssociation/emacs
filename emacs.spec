@@ -77,7 +77,7 @@ This package provides an emacs binary with support for X Windows.
 Summary:	GNU Emacs Lisp source files
 Group:		Editors
 Requires:	%{name}-common = %version
-Conflicts:	emacs-el
+Conflicts:	emacs-snapshot-el
 
 %description el
 The emacs-snapshot-el package contains the emacs elisp sources for
@@ -91,7 +91,7 @@ the Emacs packages or see some elisp examples.
 Summary:	GNU Emacs documentation
 Group:		Editors
 Requires:	%{name}-common = %version
-Conflicts:	emacs-doc
+Conflicts:	emacs-snapshot-doc
 
 %description doc
 Documentation for GNU Emacs.
@@ -100,7 +100,7 @@ Documentation for GNU Emacs.
 Summary:	GNU Emacs Lisp code for international input methods
 Group:		Editors
 Requires:	%{name}-common = %version
-Conflicts:	emacs-leim 
+Conflicts:	emacs-snapshot-leim
 
 %description leim
 This package contains Emacs Lisp code for input methods for various
@@ -112,7 +112,7 @@ Group:		Editors
 Requires:	%{name}-common = %version
 Provides:	emacs-bin
 
-Conflicts:	emacs-nox
+Conflicts:	emacs-snapshot-nox
 
 Requires(preun): update-alternatives
 Requires(post):  update-alternatives
@@ -158,7 +158,7 @@ Provides:	emacs-easypg = 1.0.0
 Obsoletes:	emacs-erc < 5.3
 Provides:	emacs-erc = 5.3
 
-Conflicts:	emacs-common
+Conflicts:	emacs-snapshot-common
 
 # conflicts due to %%_bindir/{b2m,etags,rcs-checkin}
 Conflicts: xemacs-extras
