@@ -1,10 +1,10 @@
 %define _localstatedir /var/lib
 
-Summary:	The Emacs text editor for the X Window System
+Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	23.1
-Release:	%mkrel 14
+Version:	23.2
+Release:	%mkrel 1
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -27,20 +27,16 @@ Patch21:	emacs-20.4-ppc.patch
 Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
 
 Patch100:	emacs-23.0.94-infofix.patch
-Patch101:	emacs-22.3-version.patch
+Patch101:	emacs-23.1.92-version.patch
 Patch103:	emacs-23.0.94-x86_64.patch
-Patch104:	emacs-22.3-hide-toolbar.patch
-Patch111:	emacs-23.0.94-ispell-dictionaries-list-iso-8859-15.patch
+Patch104:	emacs-23.2-hide-toolbar.patch
+Patch111:	emacs-23.1.92-ispell-dictionaries-list-iso-8859-15.patch
 Patch114:	emacs-23.0.94-ppc64.patch
 Patch115:	emacs-23.0.94-lzma-support.patch
 Patch116:	emacs-22.3-fix-str-fmt.patch
 # Fix Gtk menus not being updated
 # From http://emacsbugs.donarmstrong.com/cgi-bin/bugreport.cgi?bug=4122
-Patch117:	emacs-gtk-menus.patch
-
-# Fix Mandriva bug #52794 using patch for Fedora bug #517272:
-Patch118:	emacs-23.1-fontdpi.patch
-Patch119:	emacs-23.1-CVE-2010-0825.diff
+Patch117:	emacs-23.1.92-gtk-menus.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -60,86 +56,101 @@ BuildRequires:	gtk+2-devel
 Requires(preun): update-alternatives
 Requires(post):  update-alternatives
 
-Requires:	emacs-common = %version
+Requires:	%{name}-common = %version
+Provides:	emacs = %{version}-%{release}
 Provides:	emacs-bin emacs-gtk
-Suggests:	emacs-doc
 
-Obsoletes:	emacs-snapshot < %version
+Conflicts:	emacs-snapshot < %{version}-%{release}
 Obsoletes:	emacs-gtk <= 22.3
 Obsoletes:	emacs-X11 < 22.0.50
 Provides:	emacs-X11 < 22.0.50
 
 %description
-Emacs-X11 includes the Emacs text editor program for use with the X
-Window System (it provides support for the mouse and other GUI
-elements). Emacs-X11 will also run Emacs outside of X, but it has a
-larger memory footprint than the 'non-X' Emacs package (emacs-nox).
+Emacs is a powerful, customizable, self-documenting, modeless text
+editor. Emacs contains special code editing features, a scripting
+language (elisp), and the capability to read mail, news, and more
+without leaving the editor. 
 
-Install emacs if you are going to use Emacs with the X Window System.
-You should also install emacs if you're going to run Emacs both with
-and without X (it will work fine both ways). You'll also need to install the
-emacs-common package in order to run Emacs.
+This package provides an emacs binary with support for X Windows. 
 
 %package el
-Summary:	The sources for elisp programs included with Emacs
+Summary:	GNU Emacs Lisp source files
 Group:		Editors
-Requires:	emacs-common = %version
-Obsoletes:	emacs-snapshot-el < %version
+Requires:	%{name}-common = %version
+Conflicts:	emacs-el
 
 %description el
-Emacs-el contains the emacs-elisp sources for many of the elisp
-programs included with the main Emacs text editor package.
+The emacs-snapshot-el package contains the emacs elisp sources for
+many of the elisp programs included with the main Emacs text editor
+package.
 
-You need to install emacs-el only if you intend to modify any of the
-Emacs packages or see some elisp examples.
+You need to install this package only if you intend to modify any of
+the Emacs packages or see some elisp examples.
 
 %package doc
-Summary:	Emacs documentation
+Summary:	GNU Emacs documentation
 Group:		Editors
-Requires:	emacs-common = %version
-Obsoletes:	emacs-snapshot-doc < %version
+Requires:	%{name}-common = %version
+Conflicts:	emacs-doc
 
 %description doc
-The Emacs documentation.
+Documentation for GNU Emacs.
 
 %package leim
-Summary:	Emacs Lisp code for input methods for internationalization
+Summary:	GNU Emacs Lisp code for international input methods
 Group:		Editors
-Requires:	emacs-common = %version
-Obsoletes:	emacs-snapshot-leim < %version
+Requires:	%{name}-common = %version
+Conflicts:	emacs-leim 
 
 %description leim
-The Emacs Lisp code for input methods for various international
-character scripts.
+This package contains Emacs Lisp code for input methods for various
+international character scripts.
 
 %package nox
-Summary:	The Emacs text editor without support for the X Window System
+Summary:	GNU Emacs text editor without support for X11
 Group:		Editors
-Requires:	emacs-common = %version
+Requires:	%{name}-common = %version
 Provides:	emacs-bin
 
-# we don't want to provide it, only obsolete
-Obsoletes:	emacs-snapshot-nox < %version
+Conflicts:	emacs-nox
 
 Requires(preun): update-alternatives
 Requires(post):  update-alternatives
 
 %description nox
-Emacs-nox is the Emacs text editor program without support for
-the X Window System.
+Emacs is a powerful, customizable, self-documenting, modeless text
+editor. Emacs contains special code editing features, a scripting
+language (elisp), and the capability to read mail, news, and more
+without leaving the editor. 
 
-You need to install this package only if you plan on exclusively using Emacs
-without the X Window System (emacs will work both in X and out of X,
-but emacs-nox will only work outside of X). You'll also need to
-install the emacs package in order to run Emacs.
+This package provides an emacs binary with no X Windows support for
+running on a terminal.
 
 %package common
-Summary:	The libraries needed to run the GNU Emacs text editor
+Summary:	Common files for GNU Emacs
 Group:		Editors
-Requires:	emacs-common = %version
 
-Obsoletes:	gnus-emacs < 5.8.0
-Provides:	gnus-emacs = 5.11.0
+Obsoletes:	gnus-emacs < 5.13.0
+Provides:	gnus-emacs = 5.13.0
+
+Obsoletes:	emacs-cedet < 1.0-0.pre7
+Provides:	emacs-cedet = 1.0-0.pre7
+
+Conflicts:	emacs-speedbar < 1.0
+Provides:	emacs-speedbar = 1.0
+
+Obsoletes:	emacs-tramp < 2.1.18-pre
+Provides:	emacs-tramp = 2.1.18-pre
+
+Obsoletes:	emacs-url
+Provides:	emacs-url
+
+# (Lev) This doesn't look correct:
+Obsoletes:	emacs-pcomplete <= 2.4.2
+Provides:	emacs-pcomplete = 1.1.1
+
+Obsoletes:	eshell-emacs <= 2.4.2
+Provides:	eshell-emacs = 2.4.2
 
 Obsoletes:	emacs-easypg < 1.0.0
 Provides:	emacs-easypg = 1.0.0
@@ -147,47 +158,25 @@ Provides:	emacs-easypg = 1.0.0
 Obsoletes:	emacs-erc < 5.3
 Provides:	emacs-erc = 5.3
 
-Conflicts:	emacs-speedbar < 1.0
-
-Obsoletes:	emacs-tramp < 2.0.58-pre
-Provides:	emacs-tramp = 2.0.58-pre
-
-Obsoletes:	emacs-url
-Provides:	emacs-url
-
-Obsoletes:	emacs-pcomplete <= 2.4.2
-Provides:	emacs-pcomplete = 1.1.1
-
-Obsoletes:	eshell-emacs <= 2.4.2
-Provides:	eshell-emacs = 2.1.2
-
-Obsoletes:	emacs < 22.0.50
-Provides:	emacs < 22.0.50
-
-# we don't want to provide it, only obsolete
-Obsoletes:	emacs-snapshot-common < %version
+Conflicts:	emacs-common
 
 # conflicts due to %%_bindir/{b2m,etags,rcs-checkin}
 Conflicts: xemacs-extras
 
-
 %description common
 Emacs is a powerful, customizable, self-documenting, modeless text
 editor. Emacs contains special code editing features, a scripting
-language (elisp), and the capability to read mail, news and more without
-leaving the editor.
+language (elisp), and the capability to read mail, news, and more
+without leaving the editor. 
 
-This package includes the libraries you need to run the Emacs editor, so you
-need to install this package if you intend to use Emacs. You also need to
-install the actual Emacs program package (emacs-nox or
-emacs). Install emacs-nox if you are not going to use the X
-Window System; install emacs if you will be using X.
+This package contains all of the common files needed by emacs-snapshot
+or emacs-snapshot-nox
 
 %prep
 
-%setup -q
+%setup -q -n emacs-%{version}
 
-perl -p -i -e 's/ctags/gctags/g' etc/etags.1
+%__perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 
 %patch1 -p1 -b .loadup
 %patch3 -p1 -b .ia64-2
@@ -201,6 +190,7 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch21 -p1
 %patch22 -p1
 %endif
+
 %patch100 -p1
 %patch101 -p1 -b .version
 %patch103 -p1 -b .x86_64
@@ -210,30 +200,27 @@ perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 %patch115 -p1 -z .lzma-support
 %patch116 -p0 -b .str
 %patch117 -p0 -b .gtkmenus
-%patch118 -p1 -b .fontdpi
-%patch119 -p0 -b .CVE-2010-0825
 
 %build
 autoreconf -fi
 
 PUREDEF="-DNCURSES_OSPEED_T"
 XPUREDEF="-DNCURSES_OSPEED_T"
-CONFOPTS="--prefix=%{_prefix} --libexecdir=%{_libdir} --sharedstatedir=/var --with-pop --mandir=%{_mandir} --infodir=%{_infodir}"
 
 export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
 
-./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
+%configure2_5x --with-x=no
 %make bootstrap
 
 %make distclean
-#Build binary without X support
-./configure ${CONFOPTS} --with-x=no ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
+# Build binary without X support
+%configure2_5x --with-x=no
 %make
 mv src/emacs src/nox-emacs
 
 %make distclean
-#Build binary with X support
-./configure ${CONFOPTS} --with-x-toolkit ${RPM_ARCH}-mandrake-linux --libdir=%_libdir
+# Build binary with X support
+%configure2_5x --with-x-toolkit
 %make
 
 %install
@@ -241,32 +228,32 @@ rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr
 
 PATH=$PATH:/sbin
-ARCHDIR=${RPM_ARCH}-mandrake-linux
+ARCHDIR=%{_target_platform}
 %old_makeinstall sharedstatedir=%{buildroot}/var
 
 rm -f %{buildroot}%_bindir/emacs
 rm -f %{buildroot}%{_infodir}/dir
-rm %{buildroot}%{_libdir}/emacs/%version/%_arch-mandrake-linux/fakemail
+rm %{buildroot}%{_libdir}/emacs/%version/%{_target_platform}/fakemail
+
 # remove sun specific stuff
-rm -f %{buildroot}%{_datadir}/emacs/%version/etc/{emacstool.1,emacs.1,ctags.1,etags.1,sex.6}
+rm -f %{buildroot}%{_datadir}/emacs/%{version}/etc/{emacstool.1,emacs.1,ctags.1,etags.1,sex.6}
 
 # rename ctags to gctags
-mv %{buildroot}%{_mandir}/man1/ctags.1 $RPM_BUILD_ROOT%{_mandir}/man1/gctags.1
-mv %{buildroot}%{_bindir}/ctags $RPM_BUILD_ROOT%{_bindir}/gctags
+mv %{buildroot}%{_mandir}/man1/ctags.1 %{buildroot}%{_mandir}/man1/gctags.1
+mv %{buildroot}%{_bindir}/ctags %{buildroot}%{_bindir}/gctags
 
 # is that needed?
 install -d %{buildroot}%{_libdir}/emacs/site-lisp
 
 mkdir -p %{buildroot}%{_sysconfdir}/emacs
 install -m 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/emacs/site-start.el
-(cd %{buildroot}%{_datadir}/emacs/%version/lisp; ln -s ../../../../..%{_sysconfdir}/emacs/site-start.el site-start.el)
+(cd %{buildroot}%{_datadir}/emacs/%{version}/lisp; ln -s ../../../../..%{_sysconfdir}/emacs/site-start.el site-start.el)
 
 install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
 
 
 install -m755 src/nox-emacs %{buildroot}%{_bindir}/emacs-nox
 chmod -t %{buildroot}%{_bindir}/emacs*
-
 
 # create file lists
 
@@ -293,7 +280,6 @@ find %{buildroot}%{_datadir}/emacs -name '*.el' -o -name '*.el.gz' | \
   fi
 done > el-filelist
 
-# add this
 #
 # emacs-common file list
 #
@@ -309,7 +295,7 @@ find %{buildroot}%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p
   egrep -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
 
 
-%define info_files ada-mode auth autotype calc ccmode cl dbus dired-x ebrowse ediff efaq eintr elisp emacs emacs-mime epa erc eshell eudc flymake forms gnus idlwave info mairix-el message mh-e newsticker nxml-mode org pcl-cvs pgg rcirc reftex remember sasl sc ses sieve smtpmail speedbar tramp url vip viper widget woman
+%define info_files ada-mode auth autotype calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-mime epa erc eshell eudc flymake forms gnus idlwave info mairix-el message mh-e newsticker nxml-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar tramp url vip viper widget woman
 have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
 
 [ "$have_info_files" = "%info_files" ] || {
@@ -332,7 +318,6 @@ for f in %info_files; do  %_remove_install_info $f
 done
 :
 
-
 %post nox
 update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 
@@ -351,7 +336,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %{update_menus}
 %endif
 
-
 %postun
 %if %mdkversion < 200900
 %{clean_menus}
@@ -359,7 +343,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 
 [[ ! -f %{_bindir}/emacs-%{version} ]] && \
     /usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-%{version}|| :
-
 
 %files -f common-filelist common
 %defattr(-,root,root)
@@ -371,8 +354,8 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %dir %{_datadir}/emacs
 %dir %{_datadir}/emacs/site-lisp
 %{_datadir}/emacs/%version/lisp/site-start.el
-%attr(2755,root,mail) %{_libdir}/emacs/%version/%_arch-mandrake-linux/movemail
-%attr(4755,games,root) %{_libdir}/emacs/%version/%_arch-mandrake-linux/update-game-score
+%attr(2755,root,mail) %{_libdir}/emacs/%version/%{_target_platform}/movemail
+%attr(4755,games,root) %{_libdir}/emacs/%version/%{_target_platform}/update-game-score
 %{_bindir}/b2m
 %{_bindir}/emacsclient
 %{_bindir}/etags
@@ -389,19 +372,19 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %files -f el-filelist el
 %defattr(-,root,root)
 %doc src/COPYING
-/usr/share/emacs/%version/site-lisp/subdirs.el
-/usr/share/emacs/site-lisp/subdirs.el
-%{_datadir}/emacs/%version/leim/ja-dic/*.el.gz
-%{_datadir}/emacs/%version/leim/quail/*.el.gz
+%{_datadir}/emacs/%{version}/site-lisp/subdirs.el
+%{_datadir}/emacs/site-lisp/subdirs.el
+%{_datadir}/emacs/%{version}/leim/ja-dic/*.el.gz
+%{_datadir}/emacs/%{version}/leim/quail/*.el.gz
 
 %files leim
 %defattr(-,root,root)
 %doc src/COPYING
-%{_datadir}/emacs/%version/leim/leim-list.el
-%dir %{_datadir}/emacs/%version/leim/ja-dic
-%{_datadir}/emacs/%version/leim/ja-dic/*.elc
-%dir %{_datadir}/emacs/%version/leim/quail
-%{_datadir}/emacs/%version/leim/quail/*.elc
+%{_datadir}/emacs/%{version}/leim/leim-list.el
+%dir %{_datadir}/emacs/%{version}/leim/ja-dic
+%{_datadir}/emacs/%{version}/leim/ja-dic/*.elc
+%dir %{_datadir}/emacs/%{version}/leim/quail
+%{_datadir}/emacs/%{version}/leim/quail/*.elc
 
 %files nox
 %defattr(-,root,root)
@@ -411,9 +394,8 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %files
 %defattr(-,root,root)
 %doc src/COPYING
-%{_bindir}/emacs-%version
+%{_bindir}/emacs-%{version}
 %{_datadir}/applications/emacs.desktop
-%_iconsdir/hicolor/*/apps/emacs*.png
-%_iconsdir/hicolor/scalable/apps/emacs.svg
-%_iconsdir/hicolor/scalable/mimetypes/emacs-document.svg
-
+%{_iconsdir}/hicolor/*/apps/emacs*.png
+%{_iconsdir}/hicolor/scalable/apps/emacs.svg
+%{_iconsdir}/hicolor/scalable/mimetypes/emacs-document.svg
