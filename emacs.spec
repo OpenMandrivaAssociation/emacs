@@ -3,8 +3,8 @@
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	23.2
-Release:	%mkrel 3
+Version:	23.3
+Release:	%mkrel 1
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -26,7 +26,7 @@ Patch20:	emacs-20.4-ppc-config.patch
 Patch21:	emacs-20.4-ppc.patch
 Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
 
-Patch100:	emacs-23.0.94-infofix.patch
+Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
 Patch103:	emacs-23.0.94-x86_64.patch
 Patch104:	emacs-23.2-hide-toolbar.patch
@@ -34,9 +34,6 @@ Patch111:	emacs-23.1.92-ispell-dictionaries-list-iso-8859-15.patch
 Patch114:	emacs-23.0.94-ppc64.patch
 Patch115:	emacs-23.0.94-lzma-support.patch
 Patch116:	emacs-22.3-fix-str-fmt.patch
-# Fix Gtk menus not being updated
-# From http://emacsbugs.donarmstrong.com/cgi-bin/bugreport.cgi?bug=4122
-Patch117:	emacs-23.1.92-gtk-menus.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -199,7 +196,6 @@ or emacs-snapshot-nox
 %patch114 -p1 -b .ppc
 %patch115 -p1 -z .lzma-support
 %patch116 -p0 -b .str
-%patch117 -p0 -b .gtkmenus
 
 %build
 autoreconf -fi
