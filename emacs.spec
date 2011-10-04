@@ -4,7 +4,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	23.3
-Release:	%mkrel 1
+Release:	%mkrel 2
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
