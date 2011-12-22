@@ -361,6 +361,7 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %{_bindir}/rcs-checkin
 %{_mandir}/*/*
 %{_infodir}/*
+%exclude %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
 
 %files -f doc-filelist doc
 %defattr(-,root,root)
