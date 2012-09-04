@@ -41,7 +41,7 @@ BuildRequires:	libjpeg-devel
 BuildRequires:	libpng-devel
 BuildRequires:	libtiff-devel
 BuildRequires:	ncurses-devel
-BuildRequires:	libungif-devel
+BuildRequires:	ungif-devel
 BuildRequires:  texinfo
 BuildRequires:	xpm-devel
 BuildRequires:	gtk+2-devel
