@@ -1,15 +1,20 @@
 %define _localstatedir /var/lib
+%define	rel	1
 
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	23.3
-Release:	%mkrel 3
+Version:	24.2
+%if %mdkversion < 201100
+Release:	%mkrel %{rel}
+%else
+Release:	%{rel}
+%endif
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
 
-Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.bz2
+Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.xz
 Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
@@ -17,23 +22,14 @@ Source5:	emacs-config
 
 Patch1: 	emacs-20.5-loadup.patch
 Patch3: 	emacs-23.0.94-ia64-1.patch
-Patch5:		emacs-23.0.94-bzip2.patch
 Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
-Patch7:		emacs-22.0.90-rpath.patch
-Patch9:		emacs-22.0.90-force-sendmail-program.patch
-
-Patch20:	emacs-20.4-ppc-config.patch
-Patch21:	emacs-20.4-ppc.patch
-Patch22:	emacs-21.1-omit-nocombreloc-ppc.patch
+Patch7:		emacs-24.2-rpath.patch
+Patch9:		emacs-24.2-force-sendmail-program.patch
 
 Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
-Patch103:	emacs-23.0.94-x86_64.patch
-Patch104:	emacs-23.2-hide-toolbar.patch
-Patch111:	emacs-23.1.92-ispell-dictionaries-list-iso-8859-15.patch
-Patch114:	emacs-23.0.94-ppc64.patch
-Patch115:	emacs-23.0.94-lzma-support.patch
-Patch116:	emacs-22.3-fix-str-fmt.patch
+Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
+Patch115:	emacs-24.2-lzma-support.patch
 
 BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
@@ -177,7 +173,6 @@ or emacs-snapshot-nox
 
 %patch1 -p1 -b .loadup
 %patch3 -p1 -b .ia64-2
-%patch5 -p1 -b .bzip2
 %patch6 -p1
 %patch7 -p1 -b .rpath
 %patch9 -p1 -b .sendmail-program
@@ -190,15 +185,11 @@ or emacs-snapshot-nox
 
 %patch100 -p1
 %patch101 -p1 -b .version
-%patch103 -p1 -b .x86_64
-%patch104 -p1 -b .toolbar
 %patch111 -p1
-%patch114 -p1 -b .ppc
 %patch115 -p1 -z .lzma-support
-%patch116 -p0 -b .str
 
 %build
-autoreconf -fi
+autoreconf -fi -I m4
 
 PUREDEF="-DNCURSES_OSPEED_T"
 XPUREDEF="-DNCURSES_OSPEED_T"
@@ -229,13 +220,12 @@ ARCHDIR=%{_target_platform}
 
 rm -f %{buildroot}%_bindir/emacs
 rm -f %{buildroot}%{_infodir}/dir
-rm %{buildroot}%{_libdir}/emacs/%version/%{_target_platform}/fakemail
 
 # remove sun specific stuff
 rm -f %{buildroot}%{_datadir}/emacs/%{version}/etc/{emacstool.1,emacs.1,ctags.1,etags.1,sex.6}
 
 # rename ctags to gctags
-mv %{buildroot}%{_mandir}/man1/ctags.1 %{buildroot}%{_mandir}/man1/gctags.1
+mv %{buildroot}%{_mandir}/man1/ctags.1.gz %{buildroot}%{_mandir}/man1/gctags.1.gz
 mv %{buildroot}%{_bindir}/ctags %{buildroot}%{_bindir}/gctags
 
 # is that needed?
@@ -290,9 +280,8 @@ done < common-filelist.raw > common-filelist
 find %{buildroot}%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
   egrep -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
 
-
-%define info_files ada-mode auth autotype calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-mime epa erc eshell eudc flymake forms gnus idlwave info mairix-el message mh-e newsticker nxml-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar tramp url vip viper widget woman
-have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | sort))
+%define info_files ada-mode auth autotype calc calc-1 calc-2 calc-3 calc-4 calc-5 calc-6 ccmode ccmode-1 ccmode-2 cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr eintr-1 eintr-2 eintr-3 elisp elisp-1 elisp-10 elisp-11 elisp-2 elisp-3 elisp-4 elisp-5 elisp-6 elisp-7 elisp-8 elisp-9 emacs emacs-1 emacs-2 emacs-3 emacs-4 emacs-5 emacs-6 emacs-7 emacs-8 emacs-gnutls emacs-mime epa erc ert eshell eudc flymake forms gnus gnus-1 gnus-2 gnus-3 gnus-4 gnus-5 idlwave info mairix-el message mh-e mh-e-1 mh-e-2 newsticker nxml-mode org org-1 org-2 org-3 pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar tramp url vip viper widget woman
+have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | sed -e 's/\.gz$//' | sort))
 
 [ "$have_info_files" = "%info_files" ] || {
   echo "you must modify the spec file, %%info_files should be: $have_info_files"
@@ -352,7 +341,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %{_datadir}/emacs/%version/lisp/site-start.el
 %attr(2755,root,mail) %{_libdir}/emacs/%version/%{_target_platform}/movemail
 %attr(4755,games,root) %{_libdir}/emacs/%version/%{_target_platform}/update-game-score
-%{_bindir}/b2m
 %{_bindir}/emacsclient
 %{_bindir}/etags
 %{_bindir}/ebrowse
