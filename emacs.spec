@@ -1,5 +1,5 @@
 %define _localstatedir /var/lib
-%define	rel	1
+%define	rel	3
 
 Summary:	GNU Emacs text editor with X11 support
 
@@ -288,20 +288,8 @@ have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | s
   exit 1
 }
 
-
 %clean
 rm -rf %{buildroot}
-
-%post common
-# --section="GNU Emacs"
-for f in %info_files; do  %_install_info $f
-done
-:
-
-%preun
-for f in %info_files; do  %_remove_install_info $f
-done
-:
 
 %post nox
 update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
