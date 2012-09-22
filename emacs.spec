@@ -1,15 +1,8 @@
-%define _localstatedir /var/lib
-%define	rel	3
-
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	24.2
-%if %mdkversion < 201100
-Release:	%mkrel %{rel}
-%else
-Release:	%{rel}
-%endif
+Release:	%mkrel 3
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -31,7 +24,6 @@ Patch101:	emacs-23.1.92-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
 Patch115:	emacs-24.2-lzma-support.patch
 
-BuildRoot:	%_tmppath/%name-root
 BuildRequires:	libxaw-devel
 BuildRequires:	Xaw3d-devel
 BuildRequires:	x11-server-common
@@ -66,13 +58,13 @@ without leaving the editor.
 
 This package provides an emacs binary with support for X Windows. 
 
-%package el
+%package	el
 Summary:	GNU Emacs Lisp source files
 Group:		Editors
 Requires:	%{name}-common = %version
 Conflicts:	emacs-snapshot-el
 
-%description el
+%description	el
 The emacs-snapshot-el package contains the emacs elisp sources for
 many of the elisp programs included with the main Emacs text editor
 package.
@@ -80,26 +72,26 @@ package.
 You need to install this package only if you intend to modify any of
 the Emacs packages or see some elisp examples.
 
-%package doc
+%package	doc
 Summary:	GNU Emacs documentation
 Group:		Editors
 Requires:	%{name}-common = %version
 Conflicts:	emacs-snapshot-doc
 
-%description doc
+%description	doc
 Documentation for GNU Emacs.
 
-%package leim
+%package	leim
 Summary:	GNU Emacs Lisp code for international input methods
 Group:		Editors
 Requires:	%{name}-common = %version
 Conflicts:	emacs-snapshot-leim
 
-%description leim
+%description	leim
 This package contains Emacs Lisp code for input methods for various
 international character scripts.
 
-%package nox
+%package	nox
 Summary:	GNU Emacs text editor without support for X11
 Group:		Editors
 Requires:	%{name}-common = %version
@@ -110,7 +102,7 @@ Conflicts:	emacs-snapshot-nox
 Requires(preun): update-alternatives
 Requires(post):  update-alternatives
 
-%description nox
+%description	nox
 Emacs is a powerful, customizable, self-documenting, modeless text
 editor. Emacs contains special code editing features, a scripting
 language (elisp), and the capability to read mail, news, and more
@@ -119,7 +111,7 @@ without leaving the editor.
 This package provides an emacs binary with no X Windows support for
 running on a terminal.
 
-%package common
+%package	common
 Summary:	Common files for GNU Emacs
 Group:		Editors
 
@@ -156,7 +148,7 @@ Conflicts:	emacs-snapshot-common
 # conflicts due to %%_bindir/{b2m,etags,rcs-checkin}
 Conflicts: xemacs-extras
 
-%description common
+%description	common
 Emacs is a powerful, customizable, self-documenting, modeless text
 editor. Emacs contains special code editing features, a scripting
 language (elisp), and the capability to read mail, news, and more
@@ -166,8 +158,7 @@ This package contains all of the common files needed by emacs-snapshot
 or emacs-snapshot-nox
 
 %prep
-
-%setup -q -n emacs-%{version}
+%setup -q
 
 %__perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 
@@ -188,9 +179,9 @@ or emacs-snapshot-nox
 %patch111 -p1
 %patch115 -p1 -z .lzma-support
 
-%build
 autoreconf -fi -I m4
 
+%build
 PUREDEF="-DNCURSES_OSPEED_T"
 XPUREDEF="-DNCURSES_OSPEED_T"
 
@@ -288,9 +279,6 @@ have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | s
   exit 1
 }
 
-%clean
-rm -rf %{buildroot}
-
 %post nox
 update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 
@@ -305,22 +293,13 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %post
 /usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%version 21
 
-%if %mdkversion < 200900
-%{update_menus}
-%endif
-
 %postun
-%if %mdkversion < 200900
-%{clean_menus}
-%endif
-
 [[ ! -f %{_bindir}/emacs-%{version} ]] && \
     /usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-%{version}|| :
 
 %files -f common-filelist common
-%defattr(-,root,root)
 %doc BUGS README src/COPYING
-%{_localstatedir}/games/emacs
+%{_localstatedir}/lib/games/emacs
 %dir %{_sysconfdir}/emacs/site-start.d
 %dir %{_sysconfdir}/emacs
 %config(noreplace) %{_sysconfdir}/emacs/site-start.el
@@ -340,10 +319,8 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %exclude %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
 
 %files -f doc-filelist doc
-%defattr(-,root,root)
 
 %files -f el-filelist el
-%defattr(-,root,root)
 %doc src/COPYING
 %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
 %{_datadir}/emacs/site-lisp/subdirs.el
@@ -351,7 +328,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %{_datadir}/emacs/%{version}/leim/quail/*.el.gz
 
 %files leim
-%defattr(-,root,root)
 %doc src/COPYING
 %{_datadir}/emacs/%{version}/leim/leim-list.el
 %dir %{_datadir}/emacs/%{version}/leim/ja-dic
@@ -365,7 +341,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %{_bindir}/emacs-nox
 
 %files
-%defattr(-,root,root)
 %doc src/COPYING
 %{_bindir}/emacs-%{version}
 %{_datadir}/applications/emacs.desktop
