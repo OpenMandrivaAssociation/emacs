@@ -1,0 +1,15 @@
+--- emacs-snapshot/lisp/loadup.el.pix	2005-11-21 14:59:03.000000000 +0100
++++ emacs-snapshot/lisp/loadup.el	2005-11-21 15:23:09.000000000 +0100
+@@ -257,10 +257,9 @@
+ 			   (substring name (match-end 0)))))
+       (if (memq system-type '(ms-dos windows-nt))
+ 	  (setq name (expand-file-name
+-		      (if (fboundp 'x-create-frame) "DOC-X" "DOC") "../etc"))
++		      "DOC" "../etc"))
+ 	(setq name (concat (expand-file-name
+-			    (if (fboundp 'x-create-frame) "../etc/DOC-X-"
+-			      "../etc/DOC-")) name))
++			    "../etc/DOC-") name))
+ 	(if (file-exists-p name)
+ 	    (delete-file name))
+ 	(copy-file (expand-file-name "../etc/DOC") name t))

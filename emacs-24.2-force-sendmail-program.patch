@@ -1,0 +1,16 @@
+--- emacs-24.2/lisp/mail/sendmail.el.bak	2012-09-03 17:57:15.147701197 -0400
++++ emacs-24.2/lisp/mail/sendmail.el	2012-09-03 17:57:43.806566375 -0400
+@@ -43,12 +43,7 @@
+   :version "22.1")
+ 
+ (defcustom sendmail-program
+-  (or (executable-find "sendmail")
+-      (cond
+-       ((file-exists-p "/usr/sbin/sendmail") "/usr/sbin/sendmail")
+-       ((file-exists-p "/usr/lib/sendmail") "/usr/lib/sendmail")
+-       ((file-exists-p "/usr/ucblib/sendmail") "/usr/ucblib/sendmail")
+-       (t "sendmail")))
++  "/usr/sbin/sendmail"
+   "Program used to send messages."
+   :version "24.1"		; add executable-find, remove fakemail
+   :group 'mail

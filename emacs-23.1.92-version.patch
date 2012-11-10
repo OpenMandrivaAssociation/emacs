@@ -1,0 +1,13 @@
+--- emacs-23.1.92/lisp/version.el.bak	2010-02-18 15:17:41.000000000 -0500
++++ emacs-23.1.92/lisp/version.el	2010-02-18 15:18:20.000000000 -0500
+@@ -56,8 +56,8 @@
+   (interactive "P")
+   (let ((version-string
+          (format (if (not (called-interactively-p 'interactive))
+-		     "GNU Emacs %s (%s%s%s)\n of %s on %s"
+-		   "GNU Emacs %s (%s%s%s) of %s on %s")
++		     "GNU Emacs %s (%s%s%s)\n of %s on %s, modified by Mandriva"
++		   "GNU Emacs %s (%s%s%s) of %s on %s, modified by Mandriva")
+                  emacs-version
+ 		 system-configuration
+ 		 (cond ((featurep 'motif)

@@ -1,0 +1,13 @@
+--- emacs-23.0.94/src/coding.h.old	2009-06-07 18:19:43.000000000 -0400
++++ emacs-23.0.94/src/coding.h	2009-06-07 18:20:09.000000000 -0400
+@@ -646,6 +646,10 @@
+     (code) = (s1 << 8) | s2;				\
+   } while (0)
+ 
++/* Must declare this, so that we don't lose high 4 bytes on 64-bit
++   machines.  */
++extern Lisp_Object code_convert_string_norecord ();
++
+ /* Encode the file name NAME using the specified coding system
+    for file names, if any.  */
+ #define ENCODE_FILE(name)						   \
