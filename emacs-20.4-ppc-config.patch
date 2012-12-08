@@ -1,0 +1,13 @@
+--- emacs-20.4.orig/configure.in	Tue Oct 12 12:40:00 1999
++++ emacs-20.4/configure.in	Tue Oct 12 12:42:16 1999
+@@ -428,6 +428,10 @@
+     machine=nh6000 opsys=powerunix
+     NON_GNU_CPP="cc -Xo -E -P"
+   ;;
++  powerpc*-*-linux* )
++    machine=powerpc opsys=gnu-linux
++  ;;
++
+   ## SR2001/SR2201 running HI-UX/MPP
+   hppa1.1-hitachi-hiuxmpp* )
+     machine=sr2k opsys=hiuxmpp

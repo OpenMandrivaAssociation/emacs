@@ -1,0 +1,15 @@
+--- emacs-22.0.90/lisp/mail/sendmail.el.pix	2006-09-04 19:54:49.000000000 +0200
++++ emacs-22.0.90/lisp/mail/sendmail.el	2006-11-17 08:44:13.000000000 +0100
+@@ -49,11 +49,7 @@
+   :version "22.1")
+ 
+ (defcustom sendmail-program
+-  (cond
+-    ((file-exists-p "/usr/sbin/sendmail") "/usr/sbin/sendmail")
+-    ((file-exists-p "/usr/lib/sendmail") "/usr/lib/sendmail")
+-    ((file-exists-p "/usr/ucblib/sendmail") "/usr/ucblib/sendmail")
+-    (t "fakemail"))			;In ../etc, to interface to /bin/mail.
++  "/usr/sbin/sendmail"
+   "Program used to send messages."
+   :group 'mail
+   :type 'file)

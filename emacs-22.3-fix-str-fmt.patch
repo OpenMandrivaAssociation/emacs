@@ -1,0 +1,11 @@
+--- lib-src/movemail.c.str	2009-04-13 11:42:22.000000000 +0200
++++ lib-src/movemail.c	2009-04-13 11:42:35.000000000 +0200
+@@ -626,7 +626,7 @@
+   else if (s2)
+     fprintf (stderr, s1, s2);
+   else
+-    fprintf (stderr, s1);
++    fprintf (stderr, "%s", s1);
+   fprintf (stderr, "\n");
+ }
+ 

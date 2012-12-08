@@ -1,0 +1,96 @@
+;; -*- emacs-lisp -*- 
+
+;; Mandriva Linux Configuration for GNU/Emacs.
+
+;; Chmouel Boudjnah <chmouel@mandriva.com>
+;; Pixel <pixel@mandriva.com>
+;; Frederic Lepied <flepied@mandriva.com>
+;; Lev Givon <lev@mandriva.org>
+
+;; See http://www.emacs.org/ for more information and configuration
+;; examples.
+
+;; Macro to detect if emacs was started in X11:
+(defmacro Xlaunch (&rest x) (list 'if (eq window-system 'x)(cons 'progn x)))
+
+; Bind delete-char to Ctrl-d in X11:
+(Xlaunch (define-key global-map [(delete)] "\C-d"))
+
+;; XEmacs compatibility keys:
+(global-set-key [(control tab)] `other-window)
+(global-set-key [(meta g)] `goto-line)
+(defun switch-to-other-buffer () (interactive) (switch-to-buffer (other-buffer)))
+(global-set-key [(meta control ?l)] `switch-to-other-buffer)
+(global-set-key [(meta O) ?H] 'beginning-of-line)
+(global-set-key [(meta O) ?F] 'end-of-line)
+
+;; Don't add lines on the end of lines unless we want:
+(setq next-line-add-newlines nil)
+
+;; X selection manipulation:
+(defun x-own-selection (s) (x-set-selection `PRIMARY s))
+(global-set-key [(shift insert)] '(lambda () (interactive) (insert (x-get-selection))))
+(global-set-key [(control insert)] '(lambda () (interactive) 
+				      (x-own-selection (buffer-substring (point) (mark)))))
+
+;; Show parenthesis mode:
+(show-paren-mode t)
+
+;; Start in text mode by default:
+(setq default-major-mode (lambda () (text-mode) (font-lock-mode)))
+;; One may want to disable auto-fill through (remove-hook 'text-mode-hook 'turn-on-auto-fill)
+(add-hook 'text-mode-hook 'turn-on-auto-fill)
+
+;; Don't ask to revert for TAGS:
+(setq revert-without-query (cons "TAGS" revert-without-query))
+
+;; Uncomment the following for i18n:
+;(standard-display-european t)
+;(set-language-environment "latin-1")
+
+;; Enable color and fonts:
+(require 'font-lock)
+(setq font-lock-mode-maximum-decoration t)
+
+;; Turn on colorization:
+(if (fboundp 'global-font-lock-mode) (global-font-lock-mode t))
+
+;; Turn on auto (de)compression:
+(if (fboundp 'auto-compression-mode) (auto-compression-mode t))
+
+;; Turn on selection and change the default color:
+(setq transient-mark-mode 't highlight-nonselected-windows 't)
+
+;; Save positions in files between sessions:
+(require 'saveplace)
+(setq-default save-place t)
+
+;; Visualize long lines:
+;(require 'auto-show)
+
+;; Use aspell by default:
+(setq-default ispell-program-name "aspell")
+
+;; Load package or local system startup files:
+(let* ((paths '("/etc/emacs/site-start.d"))
+       ;; Get a list of all the files in all	 the specified
+       ;; directories that match the pattern.
+       (files
+	(apply 'append 
+	       (mapcar 
+		(lambda (dir) 
+		  (directory-files dir t "^.*\\.el$" nil))
+		paths))))
+  (mapcar
+   (lambda (file)
+     (if debug-on-error
+	 (load-file file)
+       (condition-case ()
+	   (load file nil)
+	 (error (message "Error while loading %s" file)))))
+   files)
+  )
+
+;; Enable the tool bar by default (#49289)
+(Xlaunch (tool-bar-mode 1))
+

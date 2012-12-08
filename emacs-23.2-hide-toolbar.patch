@@ -1,0 +1,12 @@
+--- emacs-23.2/src/xfns.c.toolbar	2010-08-06 21:45:49.000000000 +0200
++++ emacs-23.2/src/xfns.c	2010-08-06 21:46:18.000000000 +0200
+@@ -3423,7 +3423,8 @@
+ 
+   x_default_parameter (f, parms, Qmenu_bar_lines, make_number (1),
+ 		       "menuBar", "MenuBar", RES_TYPE_BOOLEAN_NUMBER);
+-  x_default_parameter (f, parms, Qtool_bar_lines, make_number (1),
++  /* (pixel) Hide toolbar since it's not useful */
++  x_default_parameter (f, parms, Qtool_bar_lines, make_number (0),
+ 		       "toolBar", "ToolBar", RES_TYPE_NUMBER);
+   x_default_parameter (f, parms, Qbuffer_predicate, Qnil,
+ 		       "bufferPredicate", "BufferPredicate",
