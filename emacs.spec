@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	24.2
-Release:	%mkrel 3
+Release:	4
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -24,19 +24,18 @@ Patch101:	emacs-23.1.92-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
 Patch115:	emacs-24.2-lzma-support.patch
 
-BuildRequires:	libxaw-devel
-BuildRequires:	Xaw3d-devel
+BuildRequires:	pkgconfig(xaw7)
+BuildRequires:	pkgconfig(xaw3d)
 BuildRequires:	x11-server-common
-BuildRequires:	libx11-devel
-BuildRequires:	gcc
-BuildRequires:	libjpeg-devel
-BuildRequires:	libpng-devel
-BuildRequires:	libtiff-devel
-BuildRequires:	ncurses-devel
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	jpeg-devel
+BuildRequires:	pkgconfig(libpng)
+BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	ungif-devel
 BuildRequires:  texinfo
-BuildRequires:	xpm-devel
-BuildRequires:	gtk+2-devel
+BuildRequires:	pkgconfig(xpm)
+BuildRequires:	pkgconfig(gtk+-2.0)
 
 Requires(preun): update-alternatives
 Requires(post):  update-alternatives
