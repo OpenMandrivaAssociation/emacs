@@ -186,18 +186,18 @@ XPUREDEF="-DNCURSES_OSPEED_T"
 
 export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
 
-%configure2_5x --with-x=no
+%configure2_5x --with-x=no --with-game-dir=%{_localstatedir}/lib/games/emacs
 %make bootstrap
 
 %make distclean
 # Build binary without X support
-%configure2_5x --with-x=no
+%configure2_5x --with-x=no --with-game-dir=%{_localstatedir}/lib/games/emacs
 %make
 mv src/emacs src/nox-emacs
 
 %make distclean
 # Build binary with X support
-%configure2_5x --with-x-toolkit
+%configure2_5x --with-x-toolkit --with-game-dir=%{_localstatedir}/lib/games/emacs
 %make
 
 %install
@@ -298,6 +298,7 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 
 %files -f common-filelist common
 %doc BUGS README src/COPYING
+%{_localstatedir}/lib/games/emacs
 %dir %{_sysconfdir}/emacs/site-start.d
 %dir %{_sysconfdir}/emacs
 %config(noreplace) %{_sysconfdir}/emacs/site-start.el
