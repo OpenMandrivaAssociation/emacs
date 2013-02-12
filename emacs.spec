@@ -298,7 +298,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 
 %files -f common-filelist common
 %doc BUGS README src/COPYING
-%{_localstatedir}/lib/games/emacs
 %dir %{_sysconfdir}/emacs/site-start.d
 %dir %{_sysconfdir}/emacs
 %config(noreplace) %{_sysconfdir}/emacs/site-start.el
