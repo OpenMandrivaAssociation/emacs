@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	24.2
-Release:	4
+Release:	5
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
