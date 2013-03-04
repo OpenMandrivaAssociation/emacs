@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	24.2
-Release:	5
+Release:	6
 License:	GPLv3+
 Group:		Editors
 URL:		http://www.gnu.org/software/emacs/
@@ -18,6 +18,7 @@ Patch3: 	emacs-23.0.94-ia64-1.patch
 Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
 Patch7:		emacs-24.2-rpath.patch
 Patch9:		emacs-24.2-force-sendmail-program.patch
+Patch10:	emacs-24.2-giflib5.patch
 
 Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
@@ -166,6 +167,7 @@ or emacs-snapshot-nox
 %patch6 -p1
 %patch7 -p1 -b .rpath
 %patch9 -p1 -b .sendmail-program
+%patch10 -p0 -b .giflib5
 
 %ifarch ppc
 %patch20 -p1
