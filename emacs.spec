@@ -272,7 +272,8 @@ done < common-filelist.raw > common-filelist
 find %{buildroot}%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
   egrep -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
 
-%define info_files ada-mode auth autotype calc calc-1 calc-2 calc-3 calc-4 calc-5 calc-6 ccmode ccmode-1 ccmode-2 cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr eintr-1 eintr-2 eintr-3 elisp elisp-1 elisp-10 elisp-11 elisp-2 elisp-3 elisp-4 elisp-5 elisp-6 elisp-7 elisp-8 elisp-9 emacs emacs-1 emacs-2 emacs-3 emacs-4 emacs-5 emacs-6 emacs-7 emacs-8 emacs-gnutls emacs-mime epa erc ert eshell eudc flymake forms gnus gnus-1 gnus-2 gnus-3 gnus-4 gnus-5 idlwave info mairix-el message mh-e mh-e-1 mh-e-2 newsticker nxml-mode org org-1 org-2 org-3 pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar tramp url vip viper widget woman
+%define info_files ada-mode auth autotype calc calc-1 calc-2 calc-3 calc-4 calc-5 calc-6 ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr eintr-1 eintr-2 eintr-3 elisp elisp-1 elisp-10 elisp-2 elisp-3 elisp-4 elisp-5 elisp-6 elisp-7 elisp-8 elisp-9 emacs emacs-1 emacs-2 emacs-3 emacs-4 emacs-5 emacs-6 emacs-7 emacs-8 emacs-gnutls emacs-mime epa erc ert eshell eudc flymake forms gnus gnus-1 gnus-2 gnus-3 gnus-4 gnus-5 idlwave info mairix-el message mh-e mh-e-1 mh-e-2 newsticker nxml-mode org org-1 org-2 org-3 pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar tramp url vip viper widget woman
+
 have_info_files=$(echo $(ls %{buildroot}%{_infodir} | egrep -v -- '-[0-9]+$' | sed -e 's/\.gz$//' | sort))
 
 [ "$have_info_files" = "%info_files" ] || {
