@@ -1,54 +1,43 @@
 Summary:	GNU Emacs text editor with X11 support
-
 Name:		emacs
 Version:	24.2
 Release:	6
 License:	GPLv3+
 Group:		Editors
-URL:		http://www.gnu.org/software/emacs/
-
+Url:		http://www.gnu.org/software/emacs/
 Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.xz
 Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
 Source5:	emacs-config
-
 Patch1: 	emacs-20.5-loadup.patch
 Patch3: 	emacs-23.0.94-ia64-1.patch
 Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
 Patch7:		emacs-24.2-rpath.patch
 Patch9:		emacs-24.2-force-sendmail-program.patch
 Patch10:	emacs-24.2-giflib5.patch
-
 Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
 Patch115:	emacs-24.2-lzma-support.patch
 
-BuildRequires:	pkgconfig(xaw7)
-BuildRequires:	pkgconfig(xaw3d)
+BuildRequires:  texinfo
 BuildRequires:	x11-server-common
-BuildRequires:	pkgconfig(x11)
 BuildRequires:	jpeg-devel
+BuildRequires:	ungif-devel
+BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(ncursesw)
-BuildRequires:	ungif-devel
-BuildRequires:  texinfo
+BuildRequires:	pkgconfig(x11)
+BuildRequires:	pkgconfig(xaw7)
+BuildRequires:	pkgconfig(xaw3d)
 BuildRequires:	pkgconfig(xpm)
-BuildRequires:	pkgconfig(gtk+-2.0)
-
-Requires(preun): update-alternatives
-Requires(post):  update-alternatives
-
-Requires:	%{name}-common = %version
+Requires(post,preun):	update-alternatives
+Requires:	%{name}-common = %{version}
 Provides:	emacs = %{version}-%{release}
-Provides:	emacs-bin emacs-gtk
-
-Conflicts:	emacs-snapshot < %{version}-%{release}
-Obsoletes:	emacs-gtk <= 22.3
-Obsoletes:	emacs-X11 < 22.0.50
-Provides:	emacs-X11 < 22.0.50
+Provides:	emacs-bin
+Provides:	emacs-gtk
 
 %description
 Emacs is a powerful, customizable, self-documenting, modeless text
@@ -61,8 +50,7 @@ This package provides an emacs binary with support for X Windows.
 %package	el
 Summary:	GNU Emacs Lisp source files
 Group:		Editors
-Requires:	%{name}-common = %version
-Conflicts:	emacs-snapshot-el
+Requires:	%{name}-common = %{version}
 
 %description	el
 The emacs-snapshot-el package contains the emacs elisp sources for
@@ -75,8 +63,7 @@ the Emacs packages or see some elisp examples.
 %package	doc
 Summary:	GNU Emacs documentation
 Group:		Editors
-Requires:	%{name}-common = %version
-Conflicts:	emacs-snapshot-doc
+Requires:	%{name}-common = %{version}
 
 %description	doc
 Documentation for GNU Emacs.
@@ -84,8 +71,7 @@ Documentation for GNU Emacs.
 %package	leim
 Summary:	GNU Emacs Lisp code for international input methods
 Group:		Editors
-Requires:	%{name}-common = %version
-Conflicts:	emacs-snapshot-leim
+Requires:	%{name}-common = %{version}
 
 %description	leim
 This package contains Emacs Lisp code for input methods for various
@@ -94,13 +80,9 @@ international character scripts.
 %package	nox
 Summary:	GNU Emacs text editor without support for X11
 Group:		Editors
-Requires:	%{name}-common = %version
+Requires:	%{name}-common = %{version}
 Provides:	emacs-bin
-
-Conflicts:	emacs-snapshot-nox
-
-Requires(preun): update-alternatives
-Requires(post):  update-alternatives
+Requires(post,preun):	update-alternatives
 
 %description	nox
 Emacs is a powerful, customizable, self-documenting, modeless text
@@ -114,39 +96,10 @@ running on a terminal.
 %package	common
 Summary:	Common files for GNU Emacs
 Group:		Editors
-
-Obsoletes:	gnus-emacs < 5.13.0
-Provides:	gnus-emacs = 5.13.0
-
 Obsoletes:	emacs-cedet < 1.0-0.pre7
 Provides:	emacs-cedet = 1.0-0.pre7
-
-Conflicts:	emacs-speedbar < 1.0
-Provides:	emacs-speedbar = 1.0
-
-Obsoletes:	emacs-tramp < 2.1.18-pre
-Provides:	emacs-tramp = 2.1.18-pre
-
-Obsoletes:	emacs-url
-Provides:	emacs-url
-
-# (Lev) This doesn't look correct:
-Obsoletes:	emacs-pcomplete <= 2.4.2
-Provides:	emacs-pcomplete = 1.1.1
-
-Obsoletes:	eshell-emacs <= 2.4.2
-Provides:	eshell-emacs = 2.4.2
-
 Obsoletes:	emacs-easypg < 1.0.0
 Provides:	emacs-easypg = 1.0.0
-
-Obsoletes:	emacs-erc < 5.3
-Provides:	emacs-erc = 5.3
-
-Conflicts:	emacs-snapshot-common
-
-# conflicts due to %%_bindir/{b2m,etags,rcs-checkin}
-Conflicts: xemacs-extras
 
 %description	common
 Emacs is a powerful, customizable, self-documenting, modeless text
@@ -159,8 +112,7 @@ or emacs-snapshot-nox
 
 %prep
 %setup -q
-
-%__perl -p -i -e 's/ctags/gctags/g' etc/etags.1
+sed -i -e 's/ctags/gctags/g' etc/etags.1
 
 %patch1 -p1 -b .loadup
 %patch3 -p1 -b .ia64-2
@@ -188,22 +140,27 @@ XPUREDEF="-DNCURSES_OSPEED_T"
 
 export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
 
-%configure2_5x --with-x=no --localstatedir=%{_localstatedir}/lib
+%configure2_5x\
+	--with-x=no\
+	--localstatedir=%{_localstatedir}/lib
 %make bootstrap
 
 %make distclean
 # Build binary without X support
-%configure2_5x --with-x=no --localstatedir=%{_localstatedir}/lib
+%configure2_5x\
+	--with-x=no\
+	--localstatedir=%{_localstatedir}/lib
 %make
 mv src/emacs src/nox-emacs
 
 %make distclean
 # Build binary with X support
-%configure2_5x --with-x-toolkit --localstatedir=%{_localstatedir}/lib
+%configure2_5x\
+	--with-x-toolkit\
+	--localstatedir=%{_localstatedir}/lib
 %make
 
 %install
-rm -rf %{buildroot}
 mkdir -p %{buildroot}/usr
 
 PATH=$PATH:/sbin
@@ -229,7 +186,6 @@ install -m 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/emacs/site-start.el
 
 install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
 
-
 install -m755 src/nox-emacs %{buildroot}%{_bindir}/emacs-nox
 chmod -t %{buildroot}%{_bindir}/emacs*
 
@@ -240,7 +196,7 @@ chmod -t %{buildroot}%{_bindir}/emacs*
 #
 # 3.22MB of docs from emacs-common to emacs-doc to reduce size (tutorials, news, postscript files, ...)
 # NB: etc/ps-prin{0,1}.ps are needed by ps-print
-find %{buildroot}%{_datadir}/emacs/%version/etc/ -type f | \
+find %{buildroot}%{_datadir}/emacs/%{version}/etc/ -type f | \
   egrep 'TUTORIAL\.|NEWS|ONEWS|.ps$'|fgrep -v /etc/ps-prin | \
   sed "s^%{buildroot}^^" > doc-filelist
 
@@ -263,7 +219,7 @@ done > el-filelist
 #
 
 # everything not in previous filelists, and remove a few things listed in %files
-find %{buildroot}%{_datadir}/emacs/%version -type f -print -o -type d -printf "%%%%dir %%p\n" | \
+find %{buildroot}%{_datadir}/emacs/%{version} -type f -print -o -type d -printf "%%%%dir %%p\n" | \
   grep -v /leim/ | sed "s^%{buildroot}^^" > common-filelist.raw
 while read I; do
   grep -qxF $I doc-filelist el-filelist || echo $I
@@ -293,7 +249,7 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 :
 
 %post
-/usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%version 21
+/usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%{version} 21
 
 %postun
 [[ ! -f %{_bindir}/emacs-%{version} ]] && \
@@ -307,9 +263,9 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %config(noreplace) %{_sysconfdir}/emacs/site-start.el
 %dir %{_datadir}/emacs
 %dir %{_datadir}/emacs/site-lisp
-%{_datadir}/emacs/%version/lisp/site-start.el
-%attr(2755,root,mail) %{_libdir}/emacs/%version/%{_target_platform}/movemail
-%attr(4755,games,root) %{_libdir}/emacs/%version/%{_target_platform}/update-game-score
+%{_datadir}/emacs/%{version}/lisp/site-start.el
+%attr(2755,root,mail) %{_libdir}/emacs/%{version}/%{_target_platform}/movemail
+%attr(4755,games,root) %{_libdir}/emacs/%{version}/%{_target_platform}/update-game-score
 %{_bindir}/emacsclient
 %{_bindir}/etags
 %{_bindir}/ebrowse
@@ -338,7 +294,6 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %{_datadir}/emacs/%{version}/leim/quail/*.elc
 
 %files nox
-%defattr(-,root,root)
 %doc src/COPYING
 %{_bindir}/emacs-nox
 
