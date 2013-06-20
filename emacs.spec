@@ -112,7 +112,7 @@ or emacs-snapshot-nox
 
 %prep
 %setup -q
-sed -i -e 's/ctags/gctags/g' etc/etags.1
+#sed -i -e 's/ctags/gctags/g' etc/etags.1
 
 %patch1 -p1 -b .loadup
 %patch3 -p1 -b .ia64-2
