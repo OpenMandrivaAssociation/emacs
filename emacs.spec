@@ -128,6 +128,7 @@ or emacs-snapshot-nox
 
 %patch115 -p1 -z .lzma-support
 
+find . -name Makefile.in |xargs sed -i -e 's,configure.in,configure.ac,g'
 autoreconf -fi -I m4
 
 %build
