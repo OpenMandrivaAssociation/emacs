@@ -219,7 +219,7 @@ while read I; do
   grep -qxF $I doc-filelist el-filelist || echo $I
 done < common-filelist.raw > common-filelist
 
-find %{buildroot}%{_libdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
+find %{buildroot}%{_libdir}/emacs %{buildroot}%{_libexecdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
   egrep -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
 
 # this conflicts with the info package
@@ -261,8 +261,8 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %dir %{_datadir}/emacs
 %dir %{_datadir}/emacs/site-lisp
 %{_datadir}/emacs/%{version}/lisp/site-start.el
-%attr(2755,root,mail) %{_libdir}/emacs/%{version}/%{_target_platform}/movemail
-%attr(4755,games,root) %{_libdir}/emacs/%{version}/%{_target_platform}/update-game-score
+%attr(2755,root,mail) %{_libexecdir}/emacs/%{version}/%{_target_platform}/movemail
+%attr(4755,games,root) %{_libexecdir}/emacs/%{version}/%{_target_platform}/update-game-score
 %{_bindir}/emacsclient
 %{_bindir}/etags
 %{_bindir}/ebrowse
