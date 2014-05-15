@@ -1,7 +1,8 @@
 Summary:	GNU Emacs text editor with X11 support
+
 Name:		emacs
 Version:	24.3
-Release:	6
+Release:	7
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
@@ -12,7 +13,7 @@ Source4:	gnu-large.png
 Source5:	emacs-config
 Patch1:		emacs-20.5-loadup.patch
 Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
-Patch7:		emacs-24.3-giflib5.patch
+Patch7:         emacs-24.3-giflib5.patch
 
 Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
@@ -26,11 +27,12 @@ BuildRequires:	ungif-devel
 BuildRequires:	pkgconfig(gtk+-2.0)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libtiff-4)
-BuildRequires:	pkgconfig(ncursesw)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xaw7)
-BuildRequires:	pkgconfig(xaw3d)
+BuildRequires:	ncurses-devel
+BuildRequires:	Xaw3d-devel
 BuildRequires:	pkgconfig(xpm)
+BuildRequires:	giflib-devel
 Requires(post,preun):	update-alternatives
 Requires:	%{name}-common = %{version}
 Provides:	emacs = %{version}-%{release}
@@ -47,6 +49,7 @@ This package provides an emacs binary with support for X Windows.
 
 %package	el
 Summary:	GNU Emacs Lisp source files
+
 Group:		Editors
 Requires:	%{name}-common = %{version}
 
@@ -60,6 +63,7 @@ the Emacs packages or see some elisp examples.
 
 %package	doc
 Summary:	GNU Emacs documentation
+
 Group:		Editors
 Requires:	%{name}-common = %{version}
 
@@ -68,6 +72,7 @@ Documentation for GNU Emacs.
 
 %package	leim
 Summary:	GNU Emacs Lisp code for international input methods
+
 Group:		Editors
 Requires:	%{name}-common = %{version}
 
@@ -77,6 +82,7 @@ international character scripts.
 
 %package	nox
 Summary:	GNU Emacs text editor without support for X11
+
 Group:		Editors
 Requires:	%{name}-common = %{version}
 Provides:	emacs-bin
@@ -93,6 +99,7 @@ running on a terminal.
 
 %package	common
 Summary:	Common files for GNU Emacs
+
 Group:		Editors
 Obsoletes:	emacs-cedet < 1.0-0.pre7
 Provides:	emacs-cedet = 1.0-0.pre7
@@ -135,7 +142,7 @@ autoreconf -fi -I m4
 PUREDEF="-DNCURSES_OSPEED_T"
 XPUREDEF="-DNCURSES_OSPEED_T"
 
-export CFLAGS="$RPM_OPT_FLAGS $PUREDEF -fno-zero-initialized-in-bss"
+export CFLAGS="%{optflags} $PUREDEF -fno-zero-initialized-in-bss"
 
 %configure2_5x\
 	--with-x=no\
@@ -164,7 +171,7 @@ PATH=$PATH:/sbin
 ARCHDIR=%{_target_platform}
 %old_makeinstall sharedstatedir=%{buildroot}/var/lib localstatedir=%{buildroot}/var/lib
 
-rm -f %{buildroot}%_bindir/emacs
+rm -f %{buildroot}%{_bindir}/emacs
 rm -f %{buildroot}%{_infodir}/dir
 
 # remove sun specific stuff
@@ -173,6 +180,7 @@ rm -f %{buildroot}%{_datadir}/emacs/%{version}/etc/{emacstool.1,emacs.1,ctags.1,
 # rename ctags to gctags
 mv %{buildroot}%{_mandir}/man1/ctags.1.gz %{buildroot}%{_mandir}/man1/gctags.1.gz
 mv %{buildroot}%{_bindir}/ctags %{buildroot}%{_bindir}/gctags
+mv -f %{buildroot}%{_bindir}/{etags,emacs-etags}
 
 # is that needed?
 install -d %{buildroot}%{_libdir}/emacs/site-lisp
@@ -192,7 +200,7 @@ chmod -t %{buildroot}%{_bindir}/emacs*
 # 3.22MB of docs from emacs-common to emacs-doc to reduce size (tutorials, news, postscript files, ...)
 # NB: etc/ps-prin{0,1}.ps are needed by ps-print
 find %{buildroot}%{_datadir}/emacs/%{version}/etc/ -type f | \
-  egrep 'TUTORIAL\.|NEWS|ONEWS|.ps$'|fgrep -v /etc/ps-prin | \
+  grep -E 'TUTORIAL\.|NEWS|ONEWS|.ps$'|grep -F -v /etc/ps-prin | \
   sed "s^%{buildroot}^^" > doc-filelist
 
 #
@@ -220,12 +228,12 @@ while read I; do
 done < common-filelist.raw > common-filelist
 
 find %{buildroot}%{_libdir}/emacs %{buildroot}%{_libexecdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
-  egrep -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
+  grep -E -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
 
 # this conflicts with the info package
 rm -f %{buildroot}%{_infodir}/info.info.gz
 
-have_info_files=$(echo $(ls %{buildroot}%{_infodir} | sed -e 's/\.info\.gz$//' | egrep -v -- '-[0-9]+$' | LC_ALL=C sort))
+have_info_files=$(echo $(ls %{buildroot}%{_infodir} | sed -e 's/\.info\.gz$//' | grep -E -v -- '-[0-9]+$' | LC_ALL=C sort))
 
 %define info_files ada-mode auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-gnutls emacs-mime epa erc ert eshell eudc flymake forms gnus htmlfontify idlwave mairix-el message mh-e newsticker nxml-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar srecode tramp url vip viper widget wisent woman
 
@@ -235,22 +243,25 @@ have_info_files=$(echo $(ls %{buildroot}%{_infodir} | sed -e 's/\.info\.gz$//' |
 }
 
 %post nox
-update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
+update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 
-[[ ! -f %_bindir/emacs ]] && update-alternatives --auto emacs
+[[ ! -f %{_bindir}/emacs ]] && update-alternatives --auto emacs
 :
 
 %postun nox
-[[ ! -f %_bindir/emacs-nox ]] && \
-    /usr/sbin/update-alternatives --remove emacs %_bindir/emacs-nox
+[[ ! -f %{_bindir}/emacs-nox ]] && \
+    /usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-nox
 :
 
 %post
-/usr/sbin/update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-%{version} 21
+/usr/sbin/update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-%{version} 21
+/usr/sbin/update-alternatives --force --install %{_bindir}/etags etags %{_bindir}/%{name}-etags 1
 
 %postun
 [[ ! -f %{_bindir}/emacs-%{version} ]] && \
     /usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-%{version}|| :
+[[ ! -f %{_bindir}/%{name}-etags ]] && \
+    /usr/sbin/update-alternatives --remove etags %{_bindir}/%{name}-etags || :    
 
 %files -f common-filelist common
 %doc BUGS README src/COPYING
@@ -264,7 +275,7 @@ update-alternatives --install %_bindir/emacs emacs %_bindir/emacs-nox 10
 %attr(2755,root,mail) %{_libexecdir}/emacs/%{version}/%{_target_platform}/movemail
 %attr(4755,games,root) %{_libexecdir}/emacs/%{version}/%{_target_platform}/update-game-score
 %{_bindir}/emacsclient
-%{_bindir}/etags
+%{_bindir}/%{name}-etags
 %{_bindir}/ebrowse
 %{_bindir}/grep-changelog
 %{_bindir}/gctags
