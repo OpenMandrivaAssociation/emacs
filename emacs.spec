@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	24.3
-Release:	7
+Release:	8
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
@@ -255,11 +255,15 @@ update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 
 %post
 /usr/sbin/update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-%{version} 21
+
+%post common
 /usr/sbin/update-alternatives --force --install %{_bindir}/etags etags %{_bindir}/%{name}-etags 1
 
 %postun
 [[ ! -f %{_bindir}/emacs-%{version} ]] && \
     /usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-%{version}|| :
+
+%postun common
 [[ ! -f %{_bindir}/%{name}-etags ]] && \
     /usr/sbin/update-alternatives --remove etags %{_bindir}/%{name}-etags || :    
 
