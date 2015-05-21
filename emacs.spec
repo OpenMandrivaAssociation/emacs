@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	24.3
-Release:	11
+Release:	12
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
@@ -13,7 +13,7 @@ Source4:	gnu-large.png
 Source5:	emacs-config
 Patch1:		emacs-20.5-loadup.patch
 Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
-Patch7:         emacs-24.3-giflib5.patch
+Patch7:		emacs-24.3-giflib5.patch
 
 Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
@@ -144,14 +144,14 @@ XPUREDEF="-DNCURSES_OSPEED_T"
 
 export CFLAGS="%{optflags} $PUREDEF -fno-zero-initialized-in-bss"
 
-%configure2_5x\
+%configure \
 	--with-x=no\
 	--localstatedir=%{_localstatedir}/lib
 %make bootstrap
 
 %make distclean
 # Build binary without X support
-%configure2_5x\
+%configure \
 	--with-x=no\
 	--localstatedir=%{_localstatedir}/lib
 %make
@@ -159,7 +159,7 @@ mv src/emacs src/nox-emacs
 
 %make distclean
 # Build binary with X support
-%configure2_5x\
+%configure \
 	--with-x-toolkit\
 	--localstatedir=%{_localstatedir}/lib
 %make
