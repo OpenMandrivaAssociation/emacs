@@ -1,8 +1,8 @@
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	24.3
-Release:	12
+Version:	24.5
+Release:	1
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
@@ -11,10 +11,6 @@ Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
 Source5:	emacs-config
-Patch1:		emacs-20.5-loadup.patch
-Patch6:		emacs-snapshot-same-etc-DOC-for-all.patch
-Patch7:		emacs-24.3-giflib5.patch
-
 Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
@@ -24,13 +20,12 @@ BuildRequires:  texinfo
 BuildRequires:	x11-server-common
 BuildRequires:	jpeg-devel
 BuildRequires:	ungif-devel
-BuildRequires:	pkgconfig(gtk+-2.0)
+BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xaw7)
 BuildRequires:	ncurses-devel
-BuildRequires:	Xaw3d-devel
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	giflib-devel
 Requires(post,preun):	update-alternatives
@@ -119,11 +114,6 @@ or emacs-snapshot-nox
 %setup -q
 %__perl -p -i -e 's/ctags/gctags/g' etc/etags.1
 
-%patch1 -p1 -b .loadup
-%patch6 -p1
-%patch7 -p1
-
-%patch100 -p1
 %patch101 -p1 -b .version
 %patch111 -p1
 
@@ -160,7 +150,7 @@ mv src/emacs src/nox-emacs
 %make distclean
 # Build binary with X support
 %configure \
-	--with-x-toolkit\
+	--with-x-toolkit=gtk3\
 	--localstatedir=%{_localstatedir}/lib
 %make
 
@@ -235,7 +225,7 @@ rm -f %{buildroot}%{_infodir}/info.info.gz
 
 have_info_files=$(echo $(ls %{buildroot}%{_infodir} | sed -e 's/\.info\.gz$//' | grep -E -v -- '-[0-9]+$' | LC_ALL=C sort))
 
-%define info_files ada-mode auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-gnutls emacs-mime epa erc ert eshell eudc flymake forms gnus htmlfontify idlwave mairix-el message mh-e newsticker nxml-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar srecode tramp url vip viper widget wisent woman
+%define info_files ada-mode auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-gnutls emacs-mime epa erc ert eshell eudc eww flymake forms gnus htmlfontify idlwave ido mairix-el message mh-e newsticker nxml-mode octave-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode tramp url vip viper widget wisent woman
 
 [ "$have_info_files" = "%info_files" ] || {
   echo "you must modify the spec file, %%info_files should be: $have_info_files"
@@ -293,16 +283,16 @@ update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 %doc src/COPYING
 %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
 %{_datadir}/emacs/site-lisp/subdirs.el
-%{_datadir}/emacs/%{version}/leim/ja-dic/*.el.gz
-%{_datadir}/emacs/%{version}/leim/quail/*.el.gz
+%{_datadir}/emacs/%{version}/lisp/leim/ja-dic/*.el.gz
+%{_datadir}/emacs/%{version}/lisp/leim/quail/*.el.gz
 
 %files leim
 %doc src/COPYING
-%{_datadir}/emacs/%{version}/leim/leim-list.el
-%dir %{_datadir}/emacs/%{version}/leim/ja-dic
-%{_datadir}/emacs/%{version}/leim/ja-dic/*.elc
-%dir %{_datadir}/emacs/%{version}/leim/quail
-%{_datadir}/emacs/%{version}/leim/quail/*.elc
+%{_datadir}/emacs/%{version}/lisp/leim/leim-list.el
+%dir %{_datadir}/emacs/%{version}/lisp/leim/ja-dic
+%{_datadir}/emacs/%{version}/lisp/leim/ja-dic/*.elc
+%dir %{_datadir}/emacs/%{version}/lisp/leim/quail
+%{_datadir}/emacs/%{version}/lisp/leim/quail/*.elc
 
 %files nox
 %doc src/COPYING

@@ -1,7 +1,8 @@
 removed_sources:
   emacs-24.2.tar.xz: 330cb768136fb2e0d8dfd1b1f1d6848e10d35e41
-sources:
   emacs-24.3.tar.xz: 4f6d5907e1919ca27b70034acaec211a09a4e204
+sources:
+  emacs-24.5.tar.xz: 9d65d74506628cec19483204454aee25de5616e6
   gnu-large.png: 2786ef270e7bcf4df94ac9f5c6d7e231372989a5
-  gnu-mini.png: 802ef85b411741440e3ecc929111fdba9191ebfb
-  gnu-normal.png: 2a8e191b07401f1642cca0794f8f4991235805cf
+  gnu-mini.png: 3ee5e3f94967f54d23f82b615464edcc9de0407a
+  gnu-normal.png: 29996a299b15439239a26dabc1c5faba7a0bfc49
