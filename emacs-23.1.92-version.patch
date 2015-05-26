@@ -6,8 +6,8 @@
           (format (if (not (called-interactively-p 'interactive))
 -		     "GNU Emacs %s (%s%s%s)\n of %s on %s"
 -		   "GNU Emacs %s (%s%s%s) of %s on %s")
-+		     "GNU Emacs %s (%s%s%s)\n of %s on %s, modified by Mandriva"
-+		   "GNU Emacs %s (%s%s%s) of %s on %s, modified by Mandriva")
++		     "GNU Emacs %s (%s%s%s)\n of %s on %s, modified by OpenMandriva"
++		   "GNU Emacs %s (%s%s%s) of %s on %s, modified by OpenMandriva")
                   emacs-version
  		 system-configuration
  		 (cond ((featurep 'motif)

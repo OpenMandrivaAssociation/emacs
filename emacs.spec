@@ -6,7 +6,7 @@ Release:	1
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
-Source0:	ftp://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.xz
+Source0:	http://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.xz
 Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
