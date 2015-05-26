@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	24.5
-Release:	1
+Release:	2
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
@@ -117,15 +117,7 @@ or emacs-snapshot-nox
 %patch111 -p1
 %patch115 -p1 -z .lzma-support
 
-find . -name Makefile.in |xargs sed -i -e 's,configure.in,configure.ac,g'
-autoreconf -fi -I m4
-
 %build
-PUREDEF="-DNCURSES_OSPEED_T"
-XPUREDEF="-DNCURSES_OSPEED_T"
-
-export CFLAGS="%{optflags} $PUREDEF -fno-zero-initialized-in-bss"
-
 %configure \
 	--with-x=no\
 	--localstatedir=%{_localstatedir}/lib
