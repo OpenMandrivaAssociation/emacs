@@ -11,7 +11,6 @@ Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
 Source5:	emacs-config
-Patch100:	emacs-23.3-infofix.patch
 Patch101:	emacs-23.1.92-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
 Patch115:	emacs-24.2-lzma-support.patch
@@ -116,13 +115,6 @@ or emacs-snapshot-nox
 
 %patch101 -p1 -b .version
 %patch111 -p1
-
-%ifarch ppc
-%patch20 -p1
-%patch21 -p1
-%patch22 -p1
-%endif
-
 %patch115 -p1 -z .lzma-support
 
 find . -name Makefile.in |xargs sed -i -e 's,configure.in,configure.ac,g'
