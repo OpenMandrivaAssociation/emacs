@@ -27,7 +27,7 @@ BuildRequires:	pkgconfig(xaw7)
 BuildRequires:	ncurses-devel
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	giflib-devel
-Requires(post,preun):	update-alternatives
+Requires(post,postun):	update-alternatives
 Requires:	%{name}-common = %{version}
 Provides:	emacs = %{version}-%{release}
 Provides:	emacs-bin
@@ -80,7 +80,7 @@ Summary:	GNU Emacs text editor without support for X11
 Group:		Editors
 Requires:	%{name}-common = %{version}
 Provides:	emacs-bin
-Requires(post,preun):	update-alternatives
+Requires(post,postun):	update-alternatives
 
 %description	nox
 Emacs is a powerful, customizable, self-documenting, modeless text
@@ -99,6 +99,7 @@ Obsoletes:	emacs-cedet < 1.0-0.pre7
 Provides:	emacs-cedet = 1.0-0.pre7
 Obsoletes:	emacs-easypg < 1.0.0
 Provides:	emacs-easypg = 1.0.0
+Requires(post,postun):	update-alternatives
 
 %description	common
 Emacs is a powerful, customizable, self-documenting, modeless text

@@ -1,6 +1,3 @@
-removed_sources:
-  emacs-24.2.tar.xz: 330cb768136fb2e0d8dfd1b1f1d6848e10d35e41
-  emacs-24.3.tar.xz: 4f6d5907e1919ca27b70034acaec211a09a4e204
 sources:
   emacs-24.5.tar.xz: 9d65d74506628cec19483204454aee25de5616e6
   gnu-large.png: 2786ef270e7bcf4df94ac9f5c6d7e231372989a5
