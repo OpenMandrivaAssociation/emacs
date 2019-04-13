@@ -1,5 +1,2 @@
 sources:
-  emacs-24.5.tar.xz: 9d65d74506628cec19483204454aee25de5616e6
-  gnu-large.png: 2786ef270e7bcf4df94ac9f5c6d7e231372989a5
-  gnu-mini.png: 3ee5e3f94967f54d23f82b615464edcc9de0407a
-  gnu-normal.png: 29996a299b15439239a26dabc1c5faba7a0bfc49
+  emacs-26.2.tar.xz: 61eda5bd1ce42e34c04e33c9e0d977d105ec4fc4
