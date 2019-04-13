@@ -24,6 +24,7 @@ BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xaw7)
+BuildRequires:	pkgconfig(gnutls)
 BuildRequires:	ncurses-devel
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	giflib-devel
