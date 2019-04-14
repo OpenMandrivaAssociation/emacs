@@ -11,6 +11,7 @@ Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
 Source5:	emacs-config
+Source100:	emacs.rpmlintrc
 Patch101:	emacs-23.1.92-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
 Patch115:	emacs-24.2-lzma-support.patch
@@ -263,6 +264,8 @@ update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 %{_mandir}/*/*
 %{_infodir}/*
 %exclude %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
+%{_includedir}/emacs-module.h
+%{_libdir}/systemd/user/emacs.service
 
 %files -f doc-filelist doc
 
@@ -289,6 +292,7 @@ update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 %doc src/COPYING
 %{_bindir}/emacs-%{version}
 %{_datadir}/applications/emacs.desktop
+%{_datadir}/metainfo/emacs.appdata.xml
 %{_iconsdir}/hicolor/*/apps/emacs*.png
 %{_iconsdir}/hicolor/scalable/apps/emacs.svg
 %{_iconsdir}/hicolor/scalable/mimetypes/emacs-document*.svg
