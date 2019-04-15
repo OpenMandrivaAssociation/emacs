@@ -33,6 +33,7 @@ BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(xft)
 BuildRequires:	pkgconfig(libotf)
 BuildRequires:	giflib-devel
+BuildRequires:	pkgconfig(webkit2gtk-4.0)
 Requires(post,postun):	update-alternatives
 Requires:	%{name}-common = %{version}
 Provides:	emacs = %{version}-%{release}
