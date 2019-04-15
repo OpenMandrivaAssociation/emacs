@@ -26,8 +26,12 @@ BuildRequires:	pkgconfig(libtiff-4)
 BuildRequires:	pkgconfig(x11)
 BuildRequires:	pkgconfig(xaw7)
 BuildRequires:	pkgconfig(gnutls)
+BuildRequires:	pkgconfig(m17n-core)
+BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	ncurses-devel
 BuildRequires:	pkgconfig(xpm)
+BuildRequires:	pkgconfig(xft)
+BuildRequires:	pkgconfig(libotf)
 BuildRequires:	giflib-devel
 Requires(post,postun):	update-alternatives
 Requires:	%{name}-common = %{version}
@@ -141,7 +145,15 @@ mv src/emacs src/nox-emacs
 %make distclean
 # Build binary with X support
 %configure \
+	--with-gif \
+	--with-jpg \
+	--with-png \
+	--with-rsvg \
+	--with-tiff \
+	--with-xft \
+	--with-xwidgets \
 	--with-x-toolkit=gtk3\
+	--with-modules \
 	--localstatedir=%{_localstatedir}/lib
 %make
 
