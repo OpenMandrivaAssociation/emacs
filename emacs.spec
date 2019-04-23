@@ -251,7 +251,7 @@ update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 /usr/sbin/update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-%{version} 21
 
 %post common
-/usr/sbin/update-alternatives --force --install %{_bindir}/etags etags %{_bindir}/%{name}-etags 1
+/usr/sbin/update-alternatives --install %{_bindir}/etags etags %{_bindir}/%{name}-etags 1
 
 %postun
 [[ ! -f %{_bindir}/emacs-%{version} ]] && \
