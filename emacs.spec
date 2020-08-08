@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	26.3
-Release:	2
+Release:	3
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
@@ -12,6 +12,7 @@ Source3:	gnu-normal.png
 Source4:	gnu-large.png
 Source5:	emacs-config
 Source100:	emacs.rpmlintrc
+Patch3:         emacs-emacs-25.0.92-l10n.patch
 Patch101:	emacs-23.1.92-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
 Patch115:	emacs-24.2-lzma-support.patch
@@ -124,6 +125,7 @@ or emacs-snapshot-nox
 #patch101 -p1 -b .version
 %patch111 -p1
 %patch115 -p1 -z .lzma-support
+%patch3 -p1
 
 %build
 

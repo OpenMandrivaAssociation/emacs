@@ -1,0 +1,14 @@
+diff -Naur emacs-emacs-25.0.92.orig/etc/emacs.desktop emacs-emacs-25.0.92/etc/emacs.desktop
+--- emacs-emacs-25.0.92.orig/etc/emacs.desktop	2016-04-02 16:14:11.515601485 +0300
++++ emacs-emacs-25.0.92/etc/emacs.desktop	2016-04-02 16:15:41.036607527 +0300
+@@ -1,7 +1,9 @@
+ [Desktop Entry]
+ Name=Emacs
+-GenericName=Text Editor
++GenericName=Emacs Text Editor
++GenericName[ru]=Текстовый редактор Emacs
+ Comment=Edit text
++Comment[ru]=Текстовый редактор
+ MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
+ Exec=emacs %F
+ Icon=emacs
