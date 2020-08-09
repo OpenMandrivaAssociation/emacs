@@ -120,7 +120,6 @@ or emacs-snapshot-nox
 
 %prep
 %setup -q
-sed -i 's/ctags/gctags/g' etc/etags.1
 
 #patch101 -p1 -b .version
 %patch111 -p1
