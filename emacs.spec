@@ -1,8 +1,8 @@
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	26.3
-Release:	3
+Version:	27.1
+Release:	1
 License:	GPLv3+
 Group:		Editors
 Url:		http://www.gnu.org/software/emacs/
@@ -230,7 +230,7 @@ rm -f %{buildroot}%{_infodir}/info.info.gz
 
 have_info_files=$(echo $(ls %{buildroot}%{_infodir} | sed -e 's/\.info\.gz$//' | grep -E -v -- '-[0-9]+$' | LC_ALL=C sort))
 
-%define info_files ada-mode auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-gnutls emacs-mime epa erc ert eshell eudc eww flymake forms gnus htmlfontify idlwave ido mairix-el message mh-e newsticker nxml-mode octave-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode tramp url vhdl-mode vip viper widget wisent woman
+%define info_files auth autotype bovine calc ccmode cl dbus dired-x ebrowse ede ediff edt efaq eieio eintr elisp emacs emacs-gnutls emacs-mime epa erc ert eshell eudc eww flymake forms gnus htmlfontify idlwave ido mairix-el message mh-e newsticker nxml-mode octave-mode org pcl-cvs pgg rcirc reftex remember sasl sc semantic ses sieve smtpmail speedbar srecode todo-mode tramp url vhdl-mode vip viper widget wisent woman
 
 [ "$have_info_files" = "%info_files" ] || {
   echo "you must modify the spec file, %%info_files should be: $have_info_files"
@@ -309,4 +309,5 @@ update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 %{_datadir}/metainfo/emacs.appdata.xml
 %{_iconsdir}/hicolor/*/apps/emacs*.png
 %{_iconsdir}/hicolor/scalable/apps/emacs.svg
+%{_iconsdir}/hicolor/scalable/apps/emacs.ico
 %{_iconsdir}/hicolor/scalable/mimetypes/emacs-document*.svg
