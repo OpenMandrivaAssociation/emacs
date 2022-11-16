@@ -1,7 +1,7 @@
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	27.1
+Version:	27.2
 Release:	1
 License:	GPLv3+
 Group:		Editors
