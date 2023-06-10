@@ -1,6 +1,5 @@
-diff -Naur emacs-emacs-25.0.92.orig/etc/emacs.desktop emacs-emacs-25.0.92/etc/emacs.desktop
---- emacs-emacs-25.0.92.orig/etc/emacs.desktop	2016-04-02 16:14:11.515601485 +0300
-+++ emacs-emacs-25.0.92/etc/emacs.desktop	2016-04-02 16:15:41.036607527 +0300
+--- a/etc/emacs.desktop
++++ b/etc/emacs.desktop
 @@ -1,7 +1,9 @@
  [Desktop Entry]
  Name=Emacs

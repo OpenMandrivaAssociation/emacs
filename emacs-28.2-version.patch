@@ -1,0 +1,12 @@
+--- a/lisp/version.el
++++ b/lisp/version.el
+@@ -65,7 +65,7 @@
+ to the system configuration; look at `system-configuration' instead."
+   (interactive "P")
+   (let ((version-string
+-         (format "GNU Emacs %s (build %s, %s%s%s%s)%s"
++         (format "GNU Emacs %s (build %s, %s%s%s%s)%s, compiled by OpenMandriva"
+                  emacs-version
+                  emacs-build-number
+ 		 system-configuration
+
