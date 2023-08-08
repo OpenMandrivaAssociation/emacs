@@ -1,0 +1,43 @@
+--- a/lisp/info.el
++++ b/lisp/info.el
+@@ -432,6 +432,7 @@ or `Info-virtual-nodes'."
+       '( (".gz"       . "gunzip")
+ 	 (".z"        . "gunzip")
+ 	 (".bz2"      . ("bzip2" "-dc"))
++	 (".lzma"     . ("lzma" "-dc"))
+ 	 (".inz"      . "gunzip")
+ 	 (".igz"      . "gunzip")
+ 	 (".info.Z"   . "gunzip")
+@@ -450,6 +451,7 @@ or `Info-virtual-nodes'."
+        (".info.gz"   . "gunzip")
+        (".info.z"    . "gunzip")
+        (".info.bz2"  . ("bzip2" "-dc"))
++       (".info.lzma" . ("lzma" "-dc"))
+        (".info.xz"   . "unxz")
+        (".info.zst"  . ("zstd" "-dc"))
+        (".info"      . nil)
+@@ -457,6 +459,7 @@ or `Info-virtual-nodes'."
+        ("-info.Y"    . "unyabba")
+        ("-info.gz"   . "gunzip")
+        ("-info.bz2"  . ("bzip2" "-dc"))
++       ("-info.lzma" . ("lzma" "-dc"))
+        ("-info.z"    . "gunzip")
+        ("-info.xz"   . "unxz")
+        ("-info.zst"  . ("zstd" "-dc"))
+@@ -466,6 +469,7 @@ or `Info-virtual-nodes'."
+        ("/index.gz"  . "gunzip")
+        ("/index.z"   . "gunzip")
+        ("/index.bz2" . ("bzip2" "-dc"))
++       ("/index.lzma" . ("lzma" "-dc"))
+        ("/index.xz"  . "unxz")
+        ("/index.zst" . ("zstd" "-dc"))
+        ("/index"     . nil)
+@@ -474,6 +478,7 @@ or `Info-virtual-nodes'."
+        (".gz"        . "gunzip")
+        (".z"         . "gunzip")
+        (".bz2"       . ("bzip2" "-dc"))
++       (".lzma"       . ("lzma" "-dc"))
+        (".xz"        . "unxz")
+        (".zst"       . ("zstd" "-dc"))
+        (""           . nil)))
+diff -up BUILD/emacs-29.1/lisp/info.el.omv~.omv~ BUILD/emacs-29.1/lisp/info.el.omv~

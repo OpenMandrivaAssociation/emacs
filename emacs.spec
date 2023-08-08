@@ -1,7 +1,7 @@
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	28.2
+Version:	29.1
 Release:	1
 License:	GPLv3+
 Group:		Editors
@@ -16,7 +16,7 @@ Patch0:		emacs-28.2-clang.patch
 Patch1:		emacs-28.2-l10n.patch
 Patch101:	emacs-28.2-version.patch
 Patch111:	emacs-24.2-ispell-dictionaries-list-iso-8859-15.patch
-Patch115:	emacs-24.2-lzma-support.patch
+Patch115:	emacs-29.1-lzma-support.patch
 
 BuildRequires:	acl-devel
 BuildRequires:	git-core
