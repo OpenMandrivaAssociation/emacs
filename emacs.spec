@@ -5,8 +5,8 @@ Version:	29.1
 Release:	2
 License:	GPLv3+
 Group:		Editors
-Url:		http://www.gnu.org/software/emacs/
-Source0:	http://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.xz
+Url:		https://www.gnu.org/software/emacs/
+Source0:	https://ftp.gnu.org/pub/gnu/emacs/emacs-%{version}.tar.xz
 Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
