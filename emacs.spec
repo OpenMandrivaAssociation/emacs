@@ -11,6 +11,7 @@ Source2:	gnu-mini.png
 Source3:	gnu-normal.png
 Source4:	gnu-large.png
 Source5:	emacs-config
+Source6:	emacs-desktop.sh
 Source100:	emacs.rpmlintrc
 Patch0:		emacs-28.2-clang.patch
 Patch1:		emacs-28.2-l10n.patch
@@ -34,16 +35,14 @@ BuildRequires:	pkgconfig(libotf)
 BuildRequires:	pkgconfig(libpng)
 BuildRequires:	pkgconfig(librsvg-2.0)
 BuildRequires:	pkgconfig(libtiff-4)
+BuildRequires:	pkgconfig(libwebp)
 BuildRequires:	pkgconfig(m17n-core)
 BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(x11)
-BuildRequires:	pkgconfig(xaw3d)
-BuildRequires:	pkgconfig(xaw7)
 #BuildRequires:	pkgconfig(xft)
 BuildRequires:	pkgconfig(xpm)
 BuildRequires:	pkgconfig(webkit2gtk-4.1)
 BuildRequires:	texinfo
-BuildRequires:	x11-server-common
 
 Requires(post,postun):	update-alternatives
 
@@ -63,7 +62,7 @@ This package provides an emacs binary with support for X Windows.
 
 %files
 %doc src/COPYING
-%{_bindir}/emacs-%{version}
+%{_bindir}/emacs-{desktop,gtk,x11}
 %{_datadir}/applications/emacs*.desktop
 %{_iconsdir}/hicolor/*/apps/emacs*.png
 %{_iconsdir}/hicolor/scalable/apps/emacs.svg
@@ -72,6 +71,7 @@ This package provides an emacs binary with support for X Windows.
 %dir %{_datadir}/emacs/%{version}/etc/images/icons/allout-widgets/dark-bg/
 %{_datadir}/emacs/%{version}/etc/images/icons/allout-widgets/dark-bg/locked-encrypted.xpm
 %{_metainfodir}/emacs.metainfo.xml
+%{_datadir}/glib-2.0/schemas/org.gnu.emacs.defaults.gschema.xml
 
 #----------------------------------------------------------------------
 
@@ -199,8 +199,8 @@ or emacs-snapshot-nox
 
 %build
 %configure \
-	--with-x=no \
-	--localstatedir=%{_localstatedir}/lib
+       --with-x=no \
+       --localstatedir=%{_localstatedir}/lib
 %make_build bootstrap
 
 # Build binary without X support
@@ -221,11 +221,29 @@ mv src/emacs src/nox-emacs
 	--with-png \
 	--with-rsvg \
 	--with-tiff \
-	--with-xft \
+        --with-webp \
 	--with-xwidgets \
 	--with-x-toolkit=gtk3\
 	--with-modules \
 	--localstatedir=%{_localstatedir}/lib
+%make_build
+mv src/emacs src/x11-emacs
+
+
+# Build pure gtk binary
+%make_build distclean
+%configure \
+        --with-gif \
+        --with-imagemagick \
+        --with-jpg \
+        --with-json \
+        --with-png \
+        --with-rsvg \
+        --with-tiff \
+        --with-pgtk \
+        --with-webp \
+        --with-modules \
+        --localstatedir=%{_localstatedir}/lib
 %make_build
 
 %install
@@ -252,6 +270,12 @@ install -m 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/emacs/site-start.el
 install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
 
 install -m755 src/nox-emacs %{buildroot}%{_bindir}/emacs-nox
+install -m755 src/x11-emacs %{buildroot}%{_bindir}/emacs-x11
+mv %{buildroot}%{_bindir}/emacs-%{version} %{buildroot}%{_bindir}/emacs-gtk
+
+# Install a wrapper to avoid running the Wayland-only build on X11
+install -p -m 0755 %SOURCE6 %{buildroot}%{_bindir}/emacs-desktop
+
 chmod -t %{buildroot}%{_bindir}/emacs*
 
 #
@@ -316,14 +340,14 @@ update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-nox 10
 :
 
 %post
-/usr/sbin/update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-%{version} 21
+/usr/sbin/update-alternatives --install %{_bindir}/emacs emacs %{_bindir}/emacs-desktop 21
 
 %post common
 /usr/sbin/update-alternatives --install %{_bindir}/etags etags %{_bindir}/%{name}-etags 1
 
 %postun
-[[ ! -f %{_bindir}/emacs-%{version} ]] && \
-	/usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-%{version}|| :
+[[ ! -f %{_bindir}/emacs-desktop ]] && \
+	/usr/sbin/update-alternatives --remove emacs %{_bindir}/emacs-desktop|| :
 
 %postun common
 [[ ! -f %{_bindir}/%{name}-etags ]] && \
