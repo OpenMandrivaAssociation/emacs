@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	29.3
-Release:	1
+Release:	2
 License:	GPLv3+
 Group:		Editors
 Url:		https://www.gnu.org/software/emacs/
@@ -26,7 +26,6 @@ BuildRequires:	gpm-devel
 BuildRequires:	pkgconfig(gnutls)
 BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(harfbuzz-cairo)
-BuildRequires:	pkgconfig(gconf-2.0)
 BuildRequires:	pkgconfig(ImageMagick)
 BuildRequires:	pkgconfig(jansson)
 BuildRequires:	pkgconfig(lcms2)
@@ -42,7 +41,7 @@ BuildRequires:	pkgconfig(xaw3d)
 BuildRequires:	pkgconfig(xaw7)
 #BuildRequires:	pkgconfig(xft)
 BuildRequires:	pkgconfig(xpm)
-BuildRequires:	pkgconfig(webkit2gtk-4.0)
+BuildRequires:	pkgconfig(webkit2gtk-4.1)
 BuildRequires:	texinfo
 BuildRequires:	x11-server-common
 
