@@ -67,7 +67,7 @@ This package provides an emacs binary with support for X Windows.
 %{_iconsdir}/hicolor/*/apps/emacs*.png
 %{_iconsdir}/hicolor/scalable/apps/emacs.svg
 %{_iconsdir}/hicolor/scalable/apps/emacs.ico
-%{_iconsdir}/hicolor/scalable/mimetypes/emacs-document*.svg
+%{_iconsdir}/hicolor/scalable/mimetypes/emacs-document.svg
 %dir %{_datadir}/emacs/%{version}/etc/images/icons/allout-widgets/dark-bg/
 %{_datadir}/emacs/%{version}/etc/images/icons/allout-widgets/dark-bg/locked-encrypted.xpm
 %{_metainfodir}/emacs.metainfo.xml
@@ -275,6 +275,8 @@ mv %{buildroot}%{_bindir}/emacs-%{version} %{buildroot}%{_bindir}/emacs-gtk
 
 # Install a wrapper to avoid running the Wayland-only build on X11
 install -p -m 0755 %SOURCE6 %{buildroot}%{_bindir}/emacs-desktop
+# fix wayland icon
+mv %{buildroot}%{_datadir}/applications/emacs.desktop %{buildroot}%{_datadir}/applications/emacs-gtk.desktop
 
 chmod -t %{buildroot}%{_bindir}/emacs*
 
@@ -313,6 +315,9 @@ done < common-filelist.raw > common-filelist
 
 find %{buildroot}%{_libdir}/emacs %{buildroot}%{_libexecdir}/emacs -type f -print -o -type d -printf "%%%%dir %%p\n" | \
 	grep -E -v 'movemail$|update-game-score$' | sed "s^%{buildroot}^^" >> common-filelist
+
+# Remove old icon
+rm %{buildroot}%{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document23.svg
 
 # this conflicts with the info package
 rm -f %{buildroot}%{_infodir}/info.info.gz
