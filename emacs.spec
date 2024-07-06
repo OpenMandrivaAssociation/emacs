@@ -1,8 +1,8 @@
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	29.3
-Release:	3
+Version:	29.4
+Release:	1
 License:	GPLv3+
 Group:		Editors
 Url:		https://www.gnu.org/software/emacs/
