@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	29.4
-Release:	1
+Release:	2
 License:	GPLv3+
 Group:		Editors
 Url:		https://www.gnu.org/software/emacs/
@@ -190,7 +190,7 @@ or emacs-snapshot-nox
 %{_infodir}/*
 %exclude %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
 %{_includedir}/emacs-module.h
-%{_libdir}/systemd/user/emacs.service
+%{_userunitdir}emacs.service
 
 #----------------------------------------------------------------------
 
