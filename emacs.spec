@@ -2,7 +2,7 @@ Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
 Version:	29.4
-Release:	1
+Release:	2
 License:	GPLv3+
 Group:		Editors
 Url:		https://www.gnu.org/software/emacs/
@@ -190,7 +190,7 @@ or emacs-snapshot-nox
 %{_infodir}/*
 %exclude %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
 %{_includedir}/emacs-module.h
-%{_libdir}/systemd/user/emacs.service
+%{_userunitdir}/emacs.service
 
 #----------------------------------------------------------------------
 
@@ -259,6 +259,10 @@ rm -f %{buildroot}%{_datadir}/emacs/%{version}/etc/{emacstool.1,emacs.1,ctags.1,
 mv %{buildroot}%{_mandir}/man1/ctags.1.gz %{buildroot}%{_mandir}/man1/gctags.1.gz
 mv %{buildroot}%{_bindir}/ctags %{buildroot}%{_bindir}/gctags
 mv -f %{buildroot}%{_bindir}/{etags,emacs-etags}
+
+# Correct systemd service file path
+mkdir -p %{buildroot}%{_userunitdir}
+mv -n %{buildroot}%{_libdir}/systemd/user/emacs.service %{buildroot}%{_userunitdir}/emacs.service
 
 # is that needed?
 install -d %{buildroot}%{_libdir}/emacs/site-lisp
