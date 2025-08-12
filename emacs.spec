@@ -56,9 +56,9 @@ Provides:	emacs-gtk
 Emacs is a powerful, customizable, self-documenting, modeless text
 editor. Emacs contains special code editing features, a scripting
 language (elisp), and the capability to read mail, news, and more
-without leaving the editor. 
+without leaving the editor.
 
-This package provides an emacs binary with support for X Windows. 
+This package provides an emacs binary with support for X Windows.
 
 %files
 %doc src/COPYING
@@ -143,7 +143,7 @@ Requires(post,postun):	update-alternatives
 Emacs is a powerful, customizable, self-documenting, modeless text
 editor. Emacs contains special code editing features, a scripting
 language (elisp), and the capability to read mail, news, and more
-without leaving the editor. 
+without leaving the editor.
 
 This package provides an emacs binary with no X Windows support for
 running on a terminal.
@@ -168,7 +168,7 @@ Requires(post,postun):	update-alternatives
 Emacs is a powerful, customizable, self-documenting, modeless text
 editor. Emacs contains special code editing features, a scripting
 language (elisp), and the capability to read mail, news, and more
-without leaving the editor. 
+without leaving the editor.
 
 This package contains all of the common files needed by emacs-snapshot
 or emacs-snapshot-nox
