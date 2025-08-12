@@ -1,0 +1,148 @@
+diff --git a/lib/cdefs.h b/lib/cdefs.h
+index f3f6b90..4a178b3 100644
+--- a/lib/cdefs.h
++++ b/lib/cdefs.h
+@@ -693,7 +693,7 @@ _Static_assert (0, "IEEE 128-bits long double requires redirection on this platf
+ #  define __attr_access_none(argno)
+ #endif
+ 
+-#if __GNUC_PREREQ (11, 0)
++#if __GNUC_PREREQ (11, 0) && !defined(__clang__)
+ /* Designates dealloc as a function to call to deallocate objects
+    allocated by the declared function.  */
+ # define __attr_dealloc(dealloc, argno) \
+diff --git a/lib/dirent.in.h b/lib/dirent.in.h
+index 3082c06..6547180 100644
+--- a/lib/dirent.in.h
++++ b/lib/dirent.in.h
+@@ -78,7 +78,7 @@ typedef struct gl_directory DIR;
+    that can be freed by passing them as the Ith argument to the
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+-# if __GNUC__ >= 11
++# if __GNUC__ >= 11 && !defined(__clang__)
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+diff --git a/lib/stdio.in.h b/lib/stdio.in.h
+index f7251b5..bd23701 100644
+--- a/lib/stdio.in.h
++++ b/lib/stdio.in.h
+@@ -120,7 +120,7 @@
+    that can be freed by passing them as the Ith argument to the
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+-# if __GNUC__ >= 11
++# if __GNUC__ >= 11 && !defined(__clang__)
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+@@ -178,7 +178,7 @@
+    standardized by ISO C99 and POSIX.
+    _GL_ATTRIBUTE_SPEC_PRINTF_STANDARD  */
+ /* __gnu_printf__ is supported in GCC >= 4.4.  */
+-#if __GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)
++#if (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 4)) && !defined(__clang__)
+ # define _GL_ATTRIBUTE_SPEC_PRINTF_STANDARD __gnu_printf__
+ #else
+ # define _GL_ATTRIBUTE_SPEC_PRINTF_STANDARD __printf__
+diff --git a/lib/stdlib.in.h b/lib/stdlib.in.h
+index 2685ce7..b0f6b53 100644
+--- a/lib/stdlib.in.h
++++ b/lib/stdlib.in.h
+@@ -113,7 +113,7 @@ struct random_data
+    that can be freed by passing them as the Ith argument to the
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+-# if __GNUC__ >= 11
++# if __GNUC__ >= 11 && !defined(__clang__)
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+diff --git a/lib/string.in.h b/lib/string.in.h
+index 843f8ca..c875ba3 100644
+--- a/lib/string.in.h
++++ b/lib/string.in.h
+@@ -79,7 +79,7 @@
+    that can be freed by passing them as the Ith argument to the
+    function F.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+-# if __GNUC__ >= 11
++# if __GNUC__ >= 11 && !defined(__clang__)
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+@@ -639,7 +639,7 @@ _GL_CXXALIAS_SYS (strdup, char *, (char const *__s));
+ # endif
+ _GL_CXXALIASWARN (strdup);
+ #else
+-# if __GNUC__ >= 11 && !defined strdup
++# if __GNUC__ >= 11 && !defined strdup && !defined(__clang__)
+ /* For -Wmismatched-dealloc: Associate strdup with free or rpl_free.  */
+ #  if __GLIBC__ + (__GLIBC_MINOR__ >= 2) > 2
+ _GL_FUNCDECL_SYS (strdup, char *,
+diff --git a/m4/gnulib-common.m4 b/m4/gnulib-common.m4
+index fcf184a..dce56bf 100644
+--- a/m4/gnulib-common.m4
++++ b/m4/gnulib-common.m4
+@@ -230,7 +230,7 @@ AC_DEFUN([gl_COMMON_BODY], [
+    can be freed via 'free'; it can be used only after declaring 'free'.  */
+ /* Applies to: functions.  Cannot be used on inline functions.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+-# if _GL_GNUC_PREREQ (11, 0)
++# if _GL_GNUC_PREREQ (11, 0) && !defined(__clang__)
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+diff --git a/src/conf_post.h b/src/conf_post.h
+index 4f1288f..61ffba1 100644
+--- a/src/conf_post.h
++++ b/src/conf_post.h
+@@ -276,7 +276,7 @@ extern int emacs_setenv_TZ (char const *);
+ #define NO_INLINE _GL_ATTRIBUTE_NOINLINE
+ #define EXTERNALLY_VISIBLE _GL_ATTRIBUTE_EXTERNALLY_VISIBLE
+ 
+-#if GNUC_PREREQ (4, 4, 0) && defined __GLIBC_MINOR__
++#if GNUC_PREREQ (4, 4, 0) && defined __GLIBC_MINOR__ && !defined(__clang__)
+ # define PRINTF_ARCHETYPE __gnu_printf__
+ #elif GNUC_PREREQ (4, 4, 0) && defined __MINGW32__
+ # ifdef MINGW_W64
+diff --git a/src/config.in b/src/config.in
+index fc1b504..042b06d 100644
+--- a/src/config.in
++++ b/src/config.in
+@@ -2770,7 +2770,7 @@ along with GNU Emacs.  If not, see <https://www.gnu.org/licenses/>.  */
+    can be freed via 'free'; it can be used only after declaring 'free'.  */
+ /* Applies to: functions.  Cannot be used on inline functions.  */
+ #ifndef _GL_ATTRIBUTE_DEALLOC
+-# if _GL_GNUC_PREREQ (11, 0)
++# if _GL_GNUC_PREREQ (11, 0) && !defined(__clang__)
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i) __attribute__ ((__malloc__ (f, i)))
+ # else
+ #  define _GL_ATTRIBUTE_DEALLOC(f, i)
+diff --git a/src/frame.h b/src/frame.h
+index 9265a95..d7dbf6b 100644
+--- a/src/frame.h
++++ b/src/frame.h
+@@ -1946,7 +1946,7 @@ INLINE_HEADER_END
+ /* Suppress -Wsuggest-attribute=const if there are no scroll bars.
+    This is for functions like x_set_horizontal_scroll_bars that have
+    no effect in this case.  */
+-#if ! USE_HORIZONTAL_SCROLL_BARS && GNUC_PREREQ (4, 6, 0)
++#if ! USE_HORIZONTAL_SCROLL_BARS && GNUC_PREREQ (4, 6, 0) && !defined(__clang__)
+ # pragma GCC diagnostic ignored "-Wsuggest-attribute=const"
+ #endif
+ 
+diff --git a/src/lisp.h b/src/lisp.h
+index 7ddde50..542c35a 100644
+--- a/src/lisp.h
++++ b/src/lisp.h
+@@ -5735,7 +5735,7 @@ safe_free_unbind_to (specpdl_ref count, specpdl_ref sa_count, Lisp_Object val)
+    https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109577
+    which causes GCC to mistakenly complain about the
+    memory allocation in SAFE_ALLOCA_LISP_EXTRA.  */
+-#if __GNUC__ == 13 && __GNUC_MINOR__ < 3
++#if (__GNUC__ == 13 && __GNUC_MINOR__ < 3) && !defined(__clang__)
+ # pragma GCC diagnostic ignored "-Wanalyzer-allocation-size"
+ #endif
+ 

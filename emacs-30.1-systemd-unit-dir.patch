@@ -1,0 +1,20 @@
+diff -ru emacs-30.1.orig/Makefile.in emacs-30.1/Makefile.in
+--- emacs-30.1.orig/Makefile.in	2025-08-13 07:08:57.168551768 +0200
++++ emacs-30.1/Makefile.in	2025-08-13 07:09:52.510822991 +0200
+@@ -207,15 +207,7 @@
+ metainfodir=$(datarootdir)/metainfo
+ 
+ # Where the etc/emacs.service file is to be installed.
+-# The system value (typically /usr/lib/systemd/user) can be
+-# obtained with: pkg-config --variable=systemduserunitdir systemd
+-# but that does not respect configure's prefix.
+-# It is not clear where we should install this file when
+-# prefix != /usr (or /usr/local?) (eg for non-root installs).
+-# Other options include ~/.config/systemd/user/,
+-# $XDG_RUNTIME_DIR/systemd/user/
+-# It seems the user may end up having to make a manual link...
+-systemdunitdir=$(libdir)/systemd/user
++systemdunitdir=$(shell pkg-config --variable=systemduserunitdir systemd)
+ 
+ # Where the etc/images/icons/hicolor directory is to be installed.
+ icondir=$(datarootdir)/icons

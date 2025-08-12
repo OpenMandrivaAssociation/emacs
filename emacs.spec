@@ -1,7 +1,7 @@
 Summary:	GNU Emacs text editor with X11 support
 
 Name:		emacs
-Version:	29.4
+Version:	30.1
 Release:	1
 License:	GPLv3+
 Group:		Editors
@@ -13,17 +13,19 @@ Source4:	gnu-large.png
 Source5:	emacs-config
 Source6:	emacs-desktop.sh
 Source100:	emacs.rpmlintrc
-Patch0:		emacs-28.2-clang.patch
+Patch0:		emacs-30.1-clang.patch
 Patch1:		emacs-28.2-l10n.patch
+Patch2:		emacs-30.1-systemd-unit-dir.patch
 Patch101:	emacs-28.2-version.patch
 Patch111:	emacs-29.2-ispell-dictionaries-list-iso-8859-15.patch
-Patch115:	emacs-29.1-lzma-support.patch
+Patch115:	emacs-30.1-lzma-support.patch
 
 BuildRequires:	acl-devel
 BuildRequires:	git-core
 BuildRequires:	giflib-devel
 BuildRequires:	gomp-devel
 BuildRequires:	gpm-devel
+BuildRequires:	libgccjit-devel
 BuildRequires:	pkgconfig(gnutls)
 BuildRequires:	pkgconfig(gtk+-3.0)
 BuildRequires:	pkgconfig(harfbuzz-cairo)
@@ -41,7 +43,8 @@ BuildRequires:	pkgconfig(ncurses)
 BuildRequires:	pkgconfig(x11)
 #BuildRequires:	pkgconfig(xft)
 BuildRequires:	pkgconfig(xpm)
-BuildRequires:	pkgconfig(webkit2gtk-4.1)
+#BuildRequires: pkgconfig(webkit2gtk-4.1)
+BuildRequires:	pkgconfig(tree-sitter)
 BuildRequires:	texinfo
 
 Requires(post,postun):	update-alternatives
@@ -60,7 +63,7 @@ without leaving the editor.
 
 This package provides an emacs binary with support for X Windows.
 
-%files
+%files -f emacs-filelist
 %doc src/COPYING
 %{_bindir}/emacs-{desktop,gtk,x11}
 %{_datadir}/applications/emacs*.desktop
@@ -148,7 +151,7 @@ without leaving the editor.
 This package provides an emacs binary with no X Windows support for
 running on a terminal.
 
-%files nox
+%files -f nox-filelist nox
 %doc src/COPYING
 %{_bindir}/emacs-nox
 
@@ -190,7 +193,7 @@ or emacs-snapshot-nox
 %{_infodir}/*
 %exclude %{_datadir}/emacs/%{version}/site-lisp/subdirs.el
 %{_includedir}/emacs-module.h
-%{_libdir}/systemd/user/emacs.service
+%{_userunitdir}/emacs.service
 
 #----------------------------------------------------------------------
 
@@ -198,21 +201,33 @@ or emacs-snapshot-nox
 %autosetup -p1
 
 %build
+
 %configure \
-       --with-x=no \
-       --localstatedir=%{_localstatedir}/lib
+	--with-x=no \
+	--with-native-compilation=aot \
+	--localstatedir=%{_localstatedir}/lib
 %make_build bootstrap
+%make_build distclean
 
 # Build binary without X support
-%make_build distclean
+mkdir -p _build_nox
+cd _build_nox
+CONFIGURE_TOP=..
 %configure \
-	--with-x=no\
+	--with-x=no \
+	--with-modules \
+	--with-tree-sitter \
+	--with-native-compilation=aot \
 	--localstatedir=%{_localstatedir}/lib
-%make_build
-mv src/emacs src/nox-emacs
+cd ..
+%make_build -C _build_nox
 
 # Build binary with X support
-%make_build distclean
+# TODO(d-m) disabled native widget embedding (--with-xwidgets)
+#           feature marked as broken with webkit2gtk-4.1 >= 2.41.92
+mkdir -p _build_x11
+cd _build_x11
+CONFIGURE_TOP=..
 %configure \
 	--with-gif \
 	--with-imagemagick \
@@ -222,16 +237,17 @@ mv src/emacs src/nox-emacs
 	--with-rsvg \
 	--with-tiff \
         --with-webp \
-	--with-xwidgets \
+	--without-xwidgets \
 	--with-x-toolkit=gtk3\
 	--with-modules \
+	--with-tree-sitter \
+	--with-native-compilation=aot \
 	--localstatedir=%{_localstatedir}/lib
-%make_build
-mv src/emacs src/x11-emacs
-
+cd ..
+%make_build -C _build_x11
 
 # Build pure gtk binary
-%make_build distclean
+CONFIGURE_TOP=.
 %configure \
         --with-gif \
         --with-imagemagick \
@@ -243,10 +259,14 @@ mv src/emacs src/x11-emacs
         --with-pgtk \
         --with-webp \
         --with-modules \
+        --with-tree-sitter \
+        --with-native-compilation=aot \
         --localstatedir=%{_localstatedir}/lib
 %make_build
 
 %install
+%make_install -C _build_nox install-eln
+%make_install -C _build_x11 install-eln
 %make_install
 
 rm -f %{buildroot}%{_bindir}/emacs
@@ -269,8 +289,8 @@ install -m 644 %{SOURCE5} %{buildroot}%{_sysconfdir}/emacs/site-start.el
 
 install -d %{buildroot}%{_sysconfdir}/emacs/site-start.d
 
-install -m755 src/nox-emacs %{buildroot}%{_bindir}/emacs-nox
-install -m755 src/x11-emacs %{buildroot}%{_bindir}/emacs-x11
+install -m755 _build_nox/src/emacs %{buildroot}%{_bindir}/emacs-nox
+install -m755 _build_x11/src/emacs %{buildroot}%{_bindir}/emacs-x11
 mv %{buildroot}%{_bindir}/emacs-%{version} %{buildroot}%{_bindir}/emacs-gtk
 
 # Install a wrapper to avoid running the Wayland-only build on X11
@@ -279,6 +299,20 @@ install -p -m 0755 %SOURCE6 %{buildroot}%{_bindir}/emacs-desktop
 mv %{buildroot}%{_datadir}/applications/emacs.desktop %{buildroot}%{_datadir}/applications/emacs-gtk.desktop
 
 chmod -t %{buildroot}%{_bindir}/emacs*
+
+# emacs and emacs-nox file list
+#
+# .eln files are found under lib/emacs-X.Y/native-lisp/X.Y-<fingerprint>/
+# where <fingerprint> is some arbitrary 8 digit build identifier
+# GTK, X11 and NOX have distinct fingerprints
+# contents of separate build dirs tell us which dir belongs to each build
+
+find native-lisp -type f -printf \
+     "%{_libdir}/emacs/%{version}/native-lisp/%%P\n" > emacs-filelist
+find _build_x11/native-lisp -type f -printf \
+     "%{_libdir}/emacs/%{version}/native-lisp/%%P\n" >> emacs-filelist
+find _build_nox/native-lisp -type f -printf \
+     "%{_libdir}/emacs/%{version}/native-lisp/%%P\n" > nox-filelist
 
 #
 # emacs-doc file list
@@ -321,6 +355,10 @@ rm %{buildroot}%{_datadir}/icons/hicolor/scalable/mimetypes/emacs-document23.svg
 
 # this conflicts with the info package
 rm -f %{buildroot}%{_infodir}/info.info.gz
+
+# remove non-info files
+rm -f %{buildroot}%{_infodir}/elisp_type_hierarchy.jpg
+rm -f %{buildroot}%{_infodir}/elisp_type_hierarchy.txt
 
 # info files
 have_info_files=$(echo $(ls %{buildroot}%{_infodir} | sed -e 's/\.info\.gz$//' | grep -E -v -- '-[0-9]+$' | LC_ALL=C sort))
