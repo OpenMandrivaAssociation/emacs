@@ -1,12 +1,15 @@
---- a/etc/emacs.desktop
-+++ b/etc/emacs.desktop
-@@ -1,7 +1,9 @@
+diff -ru emacs-29.4.orig/etc/emacs.desktop emacs-29.4/etc/emacs.desktop
+--- emacs-29.4.orig/etc/emacs.desktop	2025-08-12 19:36:41.522598522 +0200
++++ emacs-29.4/etc/emacs.desktop	2025-08-12 19:37:54.315830116 +0200
+@@ -1,7 +1,11 @@
  [Desktop Entry]
  Name=Emacs
 -GenericName=Text Editor
 +GenericName=Emacs Text Editor
++GenericName[fr]=Éditeur de texte Emacs
 +GenericName[ru]=Текстовый редактор Emacs
  Comment=Edit text
++Comment[fr]=Éditer du texte
 +Comment[ru]=Текстовый редактор
  MimeType=text/english;text/plain;text/x-makefile;text/x-c++hdr;text/x-c++src;text/x-chdr;text/x-csrc;text/x-java;text/x-moc;text/x-pascal;text/x-tcl;text/x-tex;application/x-shellscript;text/x-c;text/x-c++;
  Exec=emacs %F
