@@ -20,6 +20,11 @@ Patch101:	emacs-28.2-version.patch
 Patch111:	emacs-29.2-ispell-dictionaries-list-iso-8859-15.patch
 Patch115:	emacs-30.1-lzma-support.patch
 
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:	acl-devel
 BuildRequires:	git-core
 BuildRequires:	giflib-devel
